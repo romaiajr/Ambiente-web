@@ -1,50 +1,196 @@
 <template>
-  <v-container id="login">
-    <v-row>
-      <v-col md="6" offset-md="3"
-        ><v-card id="login-card" elevation="2" class="mx-auto my-12">
-          <v-row id="login-content"
-            ><v-col md="10" sm="8">
-              <v-card-title>
-                <h2>ENTRAR NO AMBIENTE WEB</h2>
-              </v-card-title>
-              <v-form ref="form">
-                <v-text-field
-                  label="Usuário"
-                  v-model="form.user"
-                ></v-text-field>
-                <v-text-field
-                  label="Senha"
-                  v-model="form.password"
-                ></v-text-field>
-                <a><small>Esqueci a senha</small></a>
-                <v-btn block>
-                  Login
-                </v-btn></v-form
-              >
-              <h5>Não tem uma conta? <a>Criar Conta</a></h5>
-            </v-col></v-row
-          >
-        </v-card>
-      </v-col>
-    </v-row>
-  </v-container>
+  <v-app>
+    <v-main>
+      <v-container class="fill-height" fluid>
+        <v-row align="center" justify="center">
+          <v-col cols="12" md="8" sm="8">
+            <v-card class="elevation-12">
+              <v-window v-model="step">
+                <v-window-item :value="1">
+                  <v-row>
+                    <v-col cols="12" md="8">
+                      <v-card-text class="mt-12">
+                        <h2 class="text-center display-2 ">
+                          LOGIN
+                        </h2>
+                        <h3 class="text-center ">
+                          Ambiente Web de Gerenciamento PBL
+                        </h3>
+                        <v-form v-model="validLogin" lazy-validation>
+                          <v-text-field
+                            id="user"
+                            v-model="formLogin.user"
+                            label="Nome de usuário ou email"
+                            prepend-icon="mdi-account"
+                            type="text"
+                          />
+                          <v-text-field
+                            id="password"
+                            v-model="formLogin.password"
+                            label="Senha"
+                            prepend-icon="mdi-lock"
+                            type="password"
+                          />
+                        </v-form>
+                        <a
+                          ><h3 class="text-center mt-4">
+                            Forgot your password ?
+                          </h3></a
+                        >
+                        <div class="text-center mt-3">
+                          <v-btn block dark @click.prevent="handleSubmit"
+                            >ENTRAR</v-btn
+                          >
+                        </div>
+                      </v-card-text>
+                    </v-col>
+                    <v-col cols="12" md="4" class="black">
+                      <v-card-text class="white--text mt-12">
+                        <h1 class="text-center display-1">Olá, Amigo(a)!</h1>
+                        <h4 class="text-center">
+                          Ainda não faz parte da nossa plataforma? Faça o
+                          cadastro e participe desta jornada com a gente!
+                        </h4>
+                        <div class="text-center mt-3">
+                          <v-btn block outlined dark @click="step++"
+                            >CRIAR NOVA CONTA</v-btn
+                          >
+                        </div>
+                      </v-card-text>
+                    </v-col>
+                  </v-row>
+                </v-window-item>
+                <v-window-item :value="2">
+                  <v-row class="fill-height">
+                    <v-col cols="12" md="4" class="black">
+                      <v-card-text class="white--text mt-12">
+                        <h1 class="text-center display-1">
+                          Bem-vindo de volta!
+                        </h1>
+                        <h4 class="text-center">
+                          Para se manter conectado com a gente, por favor insira
+                          suas informações pessoais
+                        </h4>
+                        <div class="text-center">
+                          <v-btn
+                            block
+                            outlined
+                            dark
+                            @click="step--"
+                            class="mt-3"
+                            >REALIZAR LOGIN</v-btn
+                          >
+                        </div>
+                      </v-card-text>
+                    </v-col>
+                    <v-col cols="12" md="8">
+                      <v-card-text class="mt-12">
+                        <h1 class="text-center display-2">
+                          CRIAR CONTA
+                        </h1>
+                        <!-- <div class="text-center mt-4"></div> -->
+                        <v-form
+                          ref="form"
+                          v-model="validRegistration"
+                          lazy-validation
+                        >
+                          <v-text-field
+                            v-model="formRegistration.fullName"
+                            :rules="nameRules"
+                            label="Nome completo"
+                            prepend-icon="mdi-account"
+                            type="text"
+                          />
+                          <v-text-field
+                            v-model="formRegistration.email"
+                            :rules="emailRules"
+                            label="Email"
+                            prepend-icon="mdi-email"
+                            type="email"
+                          />
+                          <v-text-field
+                            v-model="formRegistration.enrollment"
+                            :rules="enrollmentRules"
+                            label="Número de matrícula"
+                            prepend-icon="mdi-school"
+                            type="number"
+                          />
+                          <v-text-field
+                            :rules="passwordRules"
+                            v-model="formRegistration.password"
+                            label="Senha"
+                            prepend-icon="mdi-lock"
+                            type="password"
+                          />
+                        </v-form>
+                        <div class="text-center mt-3">
+                          <v-btn block dark @click.prevent="handleSubmit"
+                            >CADASTRAR</v-btn
+                          >
+                        </div>
+                      </v-card-text>
+                    </v-col>
+                  </v-row>
+                </v-window-item>
+              </v-window>
+            </v-card>
+          </v-col>
+        </v-row>
+      </v-container>
+    </v-main>
+  </v-app>
 </template>
 <script>
 export default {
   data: () => ({
-    form: { user: "", password: "" },
+    formLogin: { user: "", password: "" },
+    validLogin: true,
+    formRegistration: { email: "", password: "", enrollment: "", fullName: "" },
+    validRegistration: "",
+    step: 1,
+    nameRules: [],
+    emailRules: [],
+    enrollmentRules: [],
+    passwordRules: [],
   }),
+  methods: {
+    handleSubmit() {
+      try {
+        // Login Form
+        if (this.step == 1) {
+          console.log(this.formLogin);
+        }
+        // Registration Form
+        else if (this.step == 2) {
+          // Rules for form validation after submit to prevent error while writing
+          this.nameRules = [(v) => !!v || "Nome é requerido"];
+          this.emailRules = [
+            (v) => !!v || "Email é requerido",
+            (v) => /.+@.+\..+/.test(v) || "Email deve ser válido",
+          ];
+          this.enrollmentRules = [
+            (v) => !!v || "Matrícula é requerida",
+            (v) => (v && v.length == 8) || "Matrícula Inválida",
+          ];
+          this.passwordRules = [(v) => !!v || "Senha é requerida"];
+
+          // Form Validation
+          this.$refs.form.validate();
+
+          //Error, estado do valid tá true desde o início
+          if (this.validRegistration == true) {
+            console.log(this.formRegistration);
+          }
+        }
+      } catch (error) {
+        if (this.step == 1) {
+          console.log(error);
+        } else if (this.step == 2) {
+          console.log(error);
+        }
+      }
+    },
+  },
 };
 </script>
-<style scoped>
-#login-card {
-  height: 100% !important;
-  width: 100%;
-}
-#login-content {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-</style>
+<style scoped></style>
