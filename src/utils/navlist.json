@@ -1,0 +1,14 @@
+{
+  "adm": [
+    { "title": "Departamentos", "icon": "mdi-office-building-outline" },
+    { "title": "Disciplinas", "icon": "mdi-notebook-multiple" },
+    {
+      "title": "Semestres",
+      "icon": "mdi-calendar-multiple"
+    },
+    {
+      "title": "Turmas",
+      "icon": "mdi-google-classroom"
+    }
+  ]
+}
