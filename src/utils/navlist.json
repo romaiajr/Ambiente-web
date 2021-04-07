@@ -1,14 +1,20 @@
 {
   "adm": [
-    { "title": "Departamentos", "icon": "mdi-office-building-outline" },
-    { "title": "Disciplinas", "icon": "mdi-notebook-multiple" },
+    {
+      "title": "Departamentos",
+      "icon": "mdi-office-building-outline",
+      "value": 1
+    },
+    { "title": "Disciplinas", "icon": "mdi-notebook-multiple", "value": 2 },
     {
       "title": "Semestres",
-      "icon": "mdi-calendar-multiple"
+      "icon": "mdi-calendar-multiple",
+      "value": 3
     },
     {
       "title": "Turmas",
-      "icon": "mdi-google-classroom"
+      "icon": "mdi-google-classroom",
+      "value": 4
     }
   ]
 }

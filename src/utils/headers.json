@@ -1,0 +1,19 @@
+{
+  "departamento": [
+    { "text": "Sigla", "value": "abbreviation" },
+    { "text": "Nome", "value": "name" }
+  ],
+  "disciplinas": [
+    { "text": "Código", "value": "code" },
+    { "text": "Disciplina", "value": "name" }
+  ],
+  "semestres": [
+    { "text": "Código", "value": "code" },
+    { "text": "Data de Início", "value": "start_date" },
+    { "text": "Data de Termino", "value": "end_date" }
+  ],
+  "turmas": [
+    { "text": "Código", "value": "code" },
+    { "text": "Disciplina", "value": "name" }
+  ]
+}

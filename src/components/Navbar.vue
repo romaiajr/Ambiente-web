@@ -26,7 +26,11 @@
           v-model="group"
           active-class="deep-purple--text text--accent-4"
         >
-          <v-list-item v-for="(item, idx) in navItems" :key="idx">
+          <v-list-item
+            v-for="(item, idx) in navItems"
+            :key="idx"
+            @click="handleClick(item.value)"
+          >
             <v-icon>{{ item.icon }}</v-icon>
             <v-list-item-title style="margin-left: 8px">{{
               item.title
@@ -52,6 +56,11 @@ export default {
   watch: {
     group() {
       this.drawer = false;
+    },
+  },
+  methods: {
+    handleClick(value) {
+      this.$emit("clicked", value);
     },
   },
 };
