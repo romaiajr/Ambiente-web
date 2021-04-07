@@ -19,8 +19,12 @@
                   dense
                 ></v-text-field>
               </v-col>
-              <v-col class="d-flex" cols="12" sm="4">
-                <v-btn elevation="2" block>Adicionar</v-btn>
+              <v-col class="d-flex justify-end" cols="12" sm="4">
+                <Dialog
+                  :fields="fields"
+                  title="Adicionar Novo Departamento"
+                  @handleSubmit="handleSubmit"
+                />
               </v-col>
             </v-row>
           </v-card-subtitle>
@@ -41,17 +45,23 @@
 </template>
 <script>
 import headers from "../utils/headers.json";
+import modal from "../utils/modal.json";
+import Dialog from "./Dialog";
 import departamentoService from "../services/departamentoService";
 import disciplinaService from "../services/disciplinaService";
 import semestreService from "../services/semestreService";
 export default {
   props: ["value"],
+  components: {
+    Dialog,
+  },
   data() {
     return {
       data: [],
       searchQuery: "",
       title: "",
       headers: "",
+      fields: "",
     };
   },
   created() {
@@ -74,6 +84,7 @@ export default {
       if (this.value == 1) {
         this.title = "Departamentos";
         this.headers = headers.departamento;
+        this.fields = modal.adm;
         departamentoService.get().then((response) => {
           this.data = response.data.sort((a, b) => {
             return a.abbreviation.localeCompare(b.abbreviation);
@@ -109,7 +120,9 @@ export default {
       texto = texto.replace(/[ç]/, "c");
       return texto;
     },
-
+    async handleSubmit(form) {
+      console.log(form);
+    },
     // async onSubmit() {
     //   this.form.name.trim();
     //   this.form.autor.trim();

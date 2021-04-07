@@ -1,0 +1,14 @@
+{
+  "adm": [
+    {
+      "field": "Sigla",
+      "icon": "mdi-office-building-outline",
+      "value": "abbreviation"
+    },
+    {
+      "field": "Nome do Departamento",
+      "icon": "mdi-notebook-multiple",
+      "value": "title"
+    }
+  ]
+}
