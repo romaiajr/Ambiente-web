@@ -186,7 +186,7 @@ import router from "../router";
 export default {
   data: () => ({
     formLogin: { username: "", password: "" },
-    validLogin: true,
+    validLogin: undefined,
     formRegistration: { email: "", password: "", enrollment: "", fullName: "" },
     validRegistration: "",
     step: 1,
@@ -194,6 +194,7 @@ export default {
     emailRules: [],
     enrollmentRules: [],
     passwordRules: [],
+    usernameRules: [],
     loginError: false,
   }),
   methods: {
@@ -203,9 +204,10 @@ export default {
         if (this.step == 1) {
           this.usernameRules = [(v) => !!v || "Insira um nome de usuário"];
           this.passwordRules = [(v) => !!v || "Insira uma senha"];
-          this.$refs.signin.validate();
-          await authService.login(this.formLogin);
-          router.push("user");
+          if (this.$refs.signin.validate()) {
+            await authService.login(this.formLogin);
+            router.push("user");
+          }
         }
         // Registration Form
         else if (this.step == 2) {
