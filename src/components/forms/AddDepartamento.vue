@@ -20,6 +20,7 @@
             <v-text-field
               v-model="form.abbreviation"
               @keyup="form.abbreviation = $event.target.value.toUpperCase()"
+              @keyup.enter="handleSubmit"
               :rules="abbreviatonRules"
               label="Sigla do Departamento"
               required
@@ -29,6 +30,7 @@
               :rules="nameRules"
               label="Nome do Departamento"
               required
+              @keyup.enter="handleSubmit"
             ></v-text-field>
           </v-form>
         </v-card-text>
@@ -44,16 +46,11 @@
             "
             >Cancelar</v-btn
           >
-          <v-btn
-            text
-            color="light-blue darken-4"
-            @click.prevent="handleSubmit"
-            @keyup.enter="handleSubmit"
+          <v-btn text color="light-blue darken-4" @click.prevent="handleSubmit"
             >Adicionar</v-btn
           >
         </v-card-actions>
       </v-card>
-      <button @click="stored = !stored">a</button>
     </v-dialog>
     <v-snackbar v-model="stored" timeout="4000" color="success">
       <template v-slot:action="{ attrs }">
@@ -78,7 +75,7 @@ export default {
       abbreviatonRules: [
         (v) => !!v || "Sigla do Departamento é um campo obrigatório",
         (v) =>
-          /[D]([A-Z]*)/.test(v) ||
+          /[D][A-Z]{3}/.test(v) ||
           "Sigla deve começar com 'D' e conter apenas letras",
       ],
       nameRules: [
@@ -94,7 +91,6 @@ export default {
     async handleSubmit() {
       this.form.abbreviation.trim();
       this.form.name.trim();
-
       try {
         if (this.$refs.addDepartamento.validate()) {
           await departamentoService.store(this.form);

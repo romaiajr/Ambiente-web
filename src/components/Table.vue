@@ -20,7 +20,14 @@
                 ></v-text-field>
               </v-col>
               <v-col class="d-flex justify-end" cols="12" sm="4">
-                <addDepartment @handleSubmit="handleSubmit" />
+                <AddDepartamento
+                  v-if="value != 2"
+                  @handleSubmit="handleSubmit"
+                />
+                <AddDisciplina
+                  v-else-if="value == 2"
+                  @handleSubmit="handleSubmit"
+                />
               </v-col>
             </v-row>
           </v-card-subtitle>
@@ -44,11 +51,13 @@ import headers from "../utils/headers.json";
 import departamentoService from "../services/departamentoService";
 import disciplinaService from "../services/disciplinaService";
 import semestreService from "../services/semestreService";
-import addDepartment from "./forms/addDepartment";
+import AddDepartamento from "./forms/AddDepartamento";
+import AddDisciplina from "./forms/AddDisciplina";
 export default {
   props: ["value"],
   components: {
-    addDepartment,
+    AddDepartamento,
+    AddDisciplina,
   },
   data() {
     return {
