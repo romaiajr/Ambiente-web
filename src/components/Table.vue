@@ -20,11 +20,7 @@
                 ></v-text-field>
               </v-col>
               <v-col class="d-flex justify-end" cols="12" sm="4">
-                <Dialog
-                  :fields="fields"
-                  title="Adicionar Novo Departamento"
-                  @handleSubmit="handleSubmit"
-                />
+                <addDepartment @handleSubmit="handleSubmit" />
               </v-col>
             </v-row>
           </v-card-subtitle>
@@ -45,15 +41,14 @@
 </template>
 <script>
 import headers from "../utils/headers.json";
-import modal from "../utils/modal.json";
-import Dialog from "./Dialog";
 import departamentoService from "../services/departamentoService";
 import disciplinaService from "../services/disciplinaService";
 import semestreService from "../services/semestreService";
+import addDepartment from "./forms/addDepartment";
 export default {
   props: ["value"],
   components: {
-    Dialog,
+    addDepartment,
   },
   data() {
     return {
@@ -61,11 +56,10 @@ export default {
       searchQuery: "",
       title: "",
       headers: "",
-      fields: "",
     };
   },
   created() {
-    this.tableStructure();
+    this.componentStructure();
   },
   computed: {
     filteredList() {
@@ -80,11 +74,10 @@ export default {
     },
   },
   methods: {
-    tableStructure() {
+    componentStructure() {
       if (this.value == 1) {
         this.title = "Departamentos";
         this.headers = headers.departamento;
-        this.fields = modal.adm;
         departamentoService.get().then((response) => {
           this.data = response.data.sort((a, b) => {
             return a.abbreviation.localeCompare(b.abbreviation);
@@ -120,30 +113,9 @@ export default {
       texto = texto.replace(/[ç]/, "c");
       return texto;
     },
-    async handleSubmit(form) {
-      console.log(form);
+    handleSubmit(data) {
+      this.data.push(data);
     },
-    // async onSubmit() {
-    //   this.form.name.trim();
-    //   this.form.autor.trim();
-    //   this.form.link.trim();
-    //   try {
-    //     await artigoService.addArtigo(this.form);
-    //     this.$vs.notification({
-    //       color: "success",
-    //       title: "Adicionar Artigo",
-    //       text: "Artigo adicionado com sucesso!",
-    //     });
-    //     this.getArtigos();
-    //     this.$refs["modal-artigos"].hide();
-    //   } catch (e) {
-    //     this.$vs.notification({
-    //       color: "danger",
-    //       title: "Adicionar Artigo",
-    //       text: "Houve um erro ao tentar adicionar o novo artigo",
-    //     });
-    //   }
-    // },
   },
 };
 </script>

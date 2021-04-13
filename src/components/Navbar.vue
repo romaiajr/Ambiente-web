@@ -1,14 +1,7 @@
 <template>
   <div>
     <!-- Navbar -->
-    <v-app-bar color="black accent-4" dark>
-      <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
-      <v-toolbar-title>Ambiente Web</v-toolbar-title>
-      <v-spacer></v-spacer>
-    </v-app-bar>
-    <!-- Sidebar -->
-    <v-navigation-drawer v-model="drawer" absolute temporary>
-      <!-- Sidebar Header User Section -->
+    <v-navigation-drawer v-model="drawer" app>
       <v-list-item>
         <v-list-item-content>
           <v-list-item-title class="title">
@@ -39,6 +32,12 @@
         </v-list-item-group>
       </v-list>
     </v-navigation-drawer>
+
+    <v-app-bar color="black accent-4" dark>
+      <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
+      <v-toolbar-title>Ambiente Web</v-toolbar-title>
+      <v-spacer></v-spacer>
+    </v-app-bar>
   </div>
 </template>
 <script>
