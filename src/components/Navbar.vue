@@ -52,11 +52,6 @@ export default {
       return navlist.adm;
     },
   },
-  watch: {
-    group() {
-      this.drawer = false;
-    },
-  },
   methods: {
     handleClick(value) {
       this.$emit("clicked", value);

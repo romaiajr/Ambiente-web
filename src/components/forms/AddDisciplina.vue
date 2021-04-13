@@ -4,8 +4,10 @@
       v-model="dialog"
       max-width="500"
       @click:outside="
-        form = {};
-        clicked = 0;
+        () => {
+          form = {};
+          this.$refs.addDisciplina.reset();
+        }
       "
     >
       <v-btn slot="activator" slot-scope="props" v-on="props.on">
@@ -142,10 +144,10 @@ export default {
             value: item.id,
           });
         });
-        this.departamentos.sort((a, b) => {
-          return a.abbreviation.localeCompare(b.abbreviation);
-        });
       });
+      //   this.departamentos.sort((a, b) => {
+      //     return a.abbreviation.localeCompare(b.abbreviation);
+      //   });
     },
   },
 };

@@ -21,7 +21,7 @@
               </v-col>
               <v-col class="d-flex justify-end" cols="12" sm="4">
                 <AddDepartamento
-                  v-if="value != 2"
+                  v-if="value == 0 || value == 1"
                   @handleSubmit="handleSubmit"
                 />
                 <AddDisciplina
@@ -97,7 +97,7 @@ export default {
         this.headers = headers.disciplinas;
         disciplinaService.get().then((response) => {
           this.data = response.data.sort((a, b) => {
-            return a.abbreviation.localeCompare(b.abbreviation);
+            return a.code.localeCompare(b.code);
           });
         });
       } else if (this.value == 3) {

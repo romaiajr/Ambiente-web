@@ -4,8 +4,10 @@
       v-model="dialog"
       max-width="500"
       @click:outside="
-        form = {};
-        clicked = 0;
+        () => {
+          form = {};
+          this.$refs.addDepartamento.reset();
+        }
       "
     >
       <v-btn slot="activator" slot-scope="props" v-on="props.on">
