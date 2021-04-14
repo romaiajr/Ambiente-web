@@ -131,6 +131,7 @@ export default {
           this.dialog = false;
           this.$emit("handleSubmit", this.form);
           this.stored = true;
+          this.form = {};
         }
       } catch (error) {
         console.log(error);

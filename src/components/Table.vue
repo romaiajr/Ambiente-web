@@ -28,6 +28,10 @@
                   v-else-if="value == 2"
                   @handleSubmit="handleSubmit"
                 />
+                <AddSemestre
+                  v-else-if="value == 3"
+                  @handleSubmit="handleSubmit"
+                />
               </v-col>
             </v-row>
           </v-card-subtitle>
@@ -53,11 +57,13 @@ import disciplinaService from "../services/disciplinaService";
 import semestreService from "../services/semestreService";
 import AddDepartamento from "./forms/AddDepartamento";
 import AddDisciplina from "./forms/AddDisciplina";
+import AddSemestre from "./forms/AddSemestre";
 export default {
   props: ["value"],
   components: {
     AddDepartamento,
     AddDisciplina,
+    AddSemestre,
   },
   data() {
     return {
@@ -104,8 +110,13 @@ export default {
         this.title = "Semestres";
         this.headers = headers.semestres;
         semestreService.get().then((response) => {
-          this.data = response.data.sort((a, b) => {
-            return a.abbreviation.localeCompare(b.abbreviation);
+          let items = response.data.sort((a, b) => {
+            return a.code.localeCompare(b.code);
+          });
+          items.map((item) => {
+            item.start_date = this.formatDate(item.start_date);
+            item.end_date = this.formatDate(item.end_date);
+            this.data.push(item);
           });
         });
       } else {
@@ -113,7 +124,6 @@ export default {
         this.headers = headers.turmas;
       }
     },
-
     removeSpecial(texto) {
       texto = texto.replace(/[ÀÁÂÃÄÅ]/, "A");
       texto = texto.replace(/[àáâãäå]/, "a");
@@ -124,6 +134,11 @@ export default {
     },
     handleSubmit(data) {
       this.data.push(data);
+    },
+    formatDate(date) {
+      var newDate = date.split("-");
+      newDate = newDate[2] + "-" + newDate[1] + "-" + newDate[0];
+      return newDate;
     },
   },
 };
