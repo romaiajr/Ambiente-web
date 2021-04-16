@@ -127,8 +127,12 @@ export default {
         this.title = "Turmas";
         this.headers = headers.turmas;
         turmaService.get().then((response) => {
-          this.data = response.data.sort((a, b) => {
+          let items = response.data.sort((a, b) => {
             return a.disciplina_name.localeCompare(b.disciplina_name);
+          });
+          items.map((item) => {
+            item.code = `${item.disciplina_code}-${item.code}`;
+            this.data.push(item);
           });
         });
       }
@@ -142,12 +146,17 @@ export default {
       return texto;
     },
     handleSubmit(data) {
+      data.code = `${data.disciplina_code}-${data.code}`;
       this.data.push(data);
     },
     formatDate(date) {
       var newDate = date.split("-");
       newDate = newDate[2] + "-" + newDate[1] + "-" + newDate[0];
       return newDate;
+    },
+    sortData(array) {
+      //building
+      console.log(array);
     },
   },
 };
