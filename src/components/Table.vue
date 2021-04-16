@@ -32,6 +32,7 @@
                   v-else-if="value == 3"
                   @handleSubmit="handleSubmit"
                 />
+                <AddTurma v-else-if="value == 4" @handleSubmit="handleSubmit" />
               </v-col>
             </v-row>
           </v-card-subtitle>
@@ -55,15 +56,18 @@ import headers from "../utils/headers.json";
 import departamentoService from "../services/departamentoService";
 import disciplinaService from "../services/disciplinaService";
 import semestreService from "../services/semestreService";
+import turmaService from "../services/turmaService";
 import AddDepartamento from "./forms/AddDepartamento";
 import AddDisciplina from "./forms/AddDisciplina";
 import AddSemestre from "./forms/AddSemestre";
+import AddTurma from "./forms/AddTurma";
 export default {
   props: ["value"],
   components: {
     AddDepartamento,
     AddDisciplina,
     AddSemestre,
+    AddTurma,
   },
   data() {
     return {
@@ -79,7 +83,7 @@ export default {
   computed: {
     filteredList() {
       let search = this.removeSpecial(this.searchQuery.toLowerCase().trim());
-      if (search != null || search != "") {
+      if ((search != null || search != "") && this.value != 4) {
         return this.data.filter((item) => {
           if (this.value != 3)
             return this.removeSpecial(item.name.toLowerCase()).includes(search);
@@ -122,6 +126,11 @@ export default {
       } else {
         this.title = "Turmas";
         this.headers = headers.turmas;
+        turmaService.get().then((response) => {
+          this.data = response.data.sort((a, b) => {
+            return a.disciplina_name.localeCompare(b.disciplina_name);
+          });
+        });
       }
     },
     removeSpecial(texto) {

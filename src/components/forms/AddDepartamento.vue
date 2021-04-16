@@ -54,23 +54,24 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
-    <v-snackbar v-model="stored" timeout="4000" color="success">
-      <template v-slot:action="{ attrs }">
-        <h3 style="margin: 0px !important">
-          Departamento Adicionado com Sucesso!
-        </h3>
-        <v-btn color="white" text v-bind="attrs" @click="stored = false">
-          Fechar
-        </v-btn>
-      </template>
-    </v-snackbar>
+    <Snackbar
+      type="success"
+      :text="snackText"
+      :show="stored"
+      @hide="stored = false"
+    />
   </div>
 </template>
 <script>
 import departamentoService from "../../services/departamentoService";
+import Snackbar from "../Snackbar";
 export default {
+  components: {
+    Snackbar,
+  },
   data() {
     return {
+      snackText: "Departamento Adicionado com Sucesso!",
       form: { abbreviation: "", name: "" },
       dialog: false,
       validForm: undefined,

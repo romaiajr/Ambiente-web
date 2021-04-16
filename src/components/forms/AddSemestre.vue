@@ -113,21 +113,21 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
-    <v-snackbar v-model="stored" timeout="4000" color="success">
-      <template v-slot:action="{ attrs }">
-        <h3 style="margin: 0px !important">
-          Semestre Adicionado com Sucesso!
-        </h3>
-        <v-btn color="white" text v-bind="attrs" @click="stored = false">
-          Fechar
-        </v-btn>
-      </template>
-    </v-snackbar>
+    <Snackbar
+      type="success"
+      :text="snackText"
+      :show="stored"
+      @hide="stored = false"
+    />
   </div>
 </template>
 <script>
+import Snackbar from "../Snackbar";
 import semestreService from "../../services/semestreService";
 export default {
+  components: {
+    Snackbar,
+  },
   data() {
     return {
       form: { code: "", start_date: "", end_date: "" },
@@ -143,6 +143,7 @@ export default {
       stored: false,
       menu: false,
       menu2: false,
+      snackText: "Semestre Adicionado com Sucesso!",
     };
   },
   methods: {
