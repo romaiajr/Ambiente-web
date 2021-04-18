@@ -1,21 +1,33 @@
 <template>
   <v-app>
     <v-main
-      ><Navbar v-on:clicked="changeTableStruct"/>
-      <Table :value="current" :key="current"
-    /></v-main>
+      ><Navbar v-on:clicked="changeComponent" />
+      <DepartamentoTable v-if="current == 1" />
+      <DisciplinaTable v-else-if="current == 2" />
+      <SemestreTable v-else-if="current == 3" />
+      <TurmaTable v-else-if="current == 4" />
+    </v-main>
   </v-app>
 </template>
 <script>
 import Navbar from "../components/Navbar";
-import Table from "../components/Table";
+import DepartamentoTable from "../components/tables/DepartamentoTable";
+import DisciplinaTable from "../components/tables/DisciplinaTable";
+import SemestreTable from "../components/tables/SemestreTable";
+import TurmaTable from "../components/tables/TurmaTable";
 export default {
-  components: { Navbar, Table },
+  components: {
+    Navbar,
+    DepartamentoTable,
+    DisciplinaTable,
+    SemestreTable,
+    TurmaTable,
+  },
   data: () => ({
     current: 1,
   }),
   methods: {
-    changeTableStruct(value) {
+    changeComponent(value) {
       this.current = value;
     },
   },
