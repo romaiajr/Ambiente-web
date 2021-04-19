@@ -7,6 +7,7 @@
         () => {
           form = {};
           this.$refs.addSemestre.reset();
+          if (this.update == true) this.cancelUpdate();
         }
       "
     >
@@ -24,6 +25,7 @@
               :rules="codeRules"
               label="Código da Disciplina"
               required
+              :disabled="update"
             ></v-text-field>
             <v-menu
               v-model="menu"
@@ -42,6 +44,8 @@
                   v-bind="attrs"
                   v-on="on"
                   :rules="dateRules"
+                  @keyup.enter="handleSubmit"
+                  :disabled="update"
                 ></v-text-field>
               </template>
               <v-date-picker
@@ -75,6 +79,9 @@
                   v-bind="attrs"
                   v-on="on"
                   :rules="dateRules"
+                  @keyup.enter="
+                    update == true ? handleUpdate() : handleSubmit()
+                  "
                 ></v-text-field>
               </template>
               <v-date-picker
@@ -101,11 +108,15 @@
               () => {
                 dialog = false;
                 this.$refs.addSemestre.reset();
+                if (update == true) this.cancelUpdate();
               }
             "
             >Cancelar</v-btn
           >
-          <v-btn text color="light-blue darken-4" @click.prevent="handleSubmit"
+          <v-btn
+            text
+            color="light-blue darken-4"
+            @click.prevent="update == true ? handleUpdate() : handleSubmit()"
             >Adicionar</v-btn
           >
         </v-card-actions>
@@ -117,6 +128,12 @@
       :show="stored"
       @hide="stored = false"
     />
+    <Snackbar
+      type="success"
+      :text="snackText"
+      :show="updated"
+      @hide="updated = false"
+    />
   </div>
 </template>
 <script>
@@ -126,6 +143,7 @@ export default {
   components: {
     Snackbar,
   },
+  props: ["dataToUpdate"],
   data() {
     return {
       form: { code: "", start_date: "", end_date: "" },
@@ -139,9 +157,10 @@ export default {
       ],
       dateRules: [(v) => !!v || "Campo de Data Obrigatório"],
       stored: false,
+      update: false,
+      updated: false,
       menu: false,
       menu2: false,
-      snackText: "Semestre Adicionado com Sucesso!",
     };
   },
   methods: {
@@ -160,6 +179,38 @@ export default {
       } catch (error) {
         console.log(error);
       }
+    },
+    async handleUpdate() {
+      try {
+        if (this.$refs.addSemestre.validate()) {
+          var updatedData = await semestreService.update(this.form);
+          this.$emit("handleUpdate", updatedData.data.semestre);
+          this.dialog = false;
+          this.updated = true;
+          this.update = false;
+          this.form = {};
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    //new
+    getOne() {
+      semestreService.getOne(this.dataToUpdate).then((response) => {
+        this.form = response.data;
+      });
+      this.dialog = true;
+      this.update = true;
+    },
+    //new
+    cancelUpdate() {
+      this.update = false;
+      this.$emit("cancelUpdate");
+    },
+  },
+  watch: {
+    dataToUpdate() {
+      if (this.dataToUpdate != null) this.getOne();
     },
   },
   computed: {
@@ -182,6 +233,11 @@ export default {
       } else {
         return this.currentDate;
       }
+    },
+    snackText() {
+      return this.updated == false
+        ? "Semestre Adicionado com Sucesso!"
+        : "Semestre Atualizado com Sucesso!";
     },
   },
 };

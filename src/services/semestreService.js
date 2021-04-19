@@ -7,6 +7,14 @@ export default {
     return api.post("/semestres", obj);
   },
   destroy: (obj) => {
-    return api.delete("/semestres", { data: obj });
+    return api.delete(`/semestres/${obj}`);
+  },
+  getOne: (obj) => {
+    return api.get(`/semestres/${obj}`);
+  },
+  update: (obj) => {
+    return api.patch(`/semestres/${obj.id}`, {
+      end_date: obj.end_date,
+    });
   },
 };

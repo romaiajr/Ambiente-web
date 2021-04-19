@@ -20,7 +20,12 @@
                 ></v-text-field>
               </v-col>
               <v-col class="d-flex justify-end" cols="12" sm="4">
-                <AddSemestre @handleSubmit="handleSubmit" />
+                <AddSemestre
+                  @handleSubmit="handleSubmit"
+                  :dataToUpdate="dataToUpdate"
+                  @handleUpdate="updateData"
+                  @cancelUpdate="dataToUpdate = null"
+                />
               </v-col>
             </v-row>
           </v-card-subtitle>
@@ -28,8 +33,10 @@
             :loading="data == undefined"
             :headers="headers"
             :filteredList="filteredList"
-            notFound="Nenhum semestre encontrado"
-            @teste="teste"
+            :notFound="notFound"
+            @handleDelete="handleDelete"
+            :waiting="waiting"
+            @handleUpdate="handleUpdate"
           />
         </v-card>
       </v-col>
@@ -51,6 +58,8 @@ export default {
       data: undefined,
       searchQuery: "",
       headers: "",
+      dataToUpdate: null,
+      waiting: false,
     };
   },
   created() {
@@ -67,6 +76,13 @@ export default {
         return this.data;
       }
     },
+    notFound() {
+      if (this.data == undefined || this.data.length == 0) {
+        return "Ainda não foram cadastrados semestres";
+      } else {
+        return "Nenhum semestre encontrado";
+      }
+    },
   },
   methods: {
     componentStructure() {
@@ -75,10 +91,10 @@ export default {
         let items = response.data.sort((a, b) => {
           return a.code.localeCompare(b.code);
         });
+        this.data = [];
         items.map((item) => {
           item.start_date = this.formatDate(item.start_date);
           item.end_date = this.formatDate(item.end_date);
-          this.data = [];
           this.data.push(item);
         });
       });
@@ -86,6 +102,31 @@ export default {
     handleSubmit(data) {
       this.data = [];
       this.data.push(data);
+    },
+    handleUpdate(item) {
+      this.dataToUpdate = item.id;
+    },
+    // NEW
+    updateData(updatedData) {
+      var index = this.data.findIndex((item) => {
+        return item.id == updatedData.id;
+      });
+      this.data[index].end_date = this.formatDate(updatedData.end_date);
+      this.dataToUpdate = null;
+    },
+    // NEW
+    async handleDelete(selectedItem) {
+      try {
+        console.log(selectedItem);
+        this.waiting = true;
+        await semestreService.destroy(selectedItem.id);
+        this.data = this.data.filter((item) => {
+          return item.id != selectedItem.id;
+        });
+        this.waiting = false;
+      } catch (error) {
+        console.log(error);
+      }
     },
     formatDate(date) {
       var newDate = date.split("-");
@@ -99,9 +140,6 @@ export default {
       texto = texto.replace(/[Ç]/, "C");
       texto = texto.replace(/[ç]/, "c");
       return texto;
-    },
-    teste() {
-      alert("oi");
     },
   },
 };
