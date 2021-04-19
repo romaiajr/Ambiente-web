@@ -14,9 +14,7 @@
         + Adicionar
       </v-btn>
       <v-card>
-        <v-toolbar color="primary" dark
-          ><h2>Adicionar Nova Disciplina</h2></v-toolbar
-        >
+        <v-toolbar dark><h2>Adicionar Nova Disciplina</h2></v-toolbar>
         <v-card-text class="pt-6">
           <v-form v-model="validForm" ref="addDisciplina">
             <v-text-field
@@ -26,20 +24,21 @@
               :rules="codeRules"
               label="Código da Disciplina"
               required
+              :disabled="update"
             ></v-text-field>
             <v-text-field
               v-model="form.name"
               :rules="nameRules"
               label="Nome da Disciplina"
               required
-              @keyup.enter="handleSubmit"
+              @keyup.enter="update == true ? handleUpdate() : handleSubmit()"
             ></v-text-field>
             <v-select
               v-model="form.workload"
               :rules="workloadRules"
               label="Carga Horária da Disciplina"
               required
-              @keyup.enter="handleSubmit"
+              @keyup.enter="update == true ? handleUpdate() : handleSubmit()"
               :items="workload"
             ></v-select>
             <v-select
@@ -47,8 +46,9 @@
               :rules="departamentoRules"
               label="Departamento"
               required
-              @keyup.enter="handleSubmit"
+              @keyup.enter="update == true ? handleUpdate() : handleSubmit()"
               :items="departamentos"
+              :disabled="update"
             ></v-select>
           </v-form>
         </v-card-text>
@@ -60,11 +60,15 @@
               () => {
                 dialog = false;
                 this.$refs.addDisciplina.reset();
+                this.update = false;
               }
             "
             >Cancelar</v-btn
           >
-          <v-btn text color="light-blue darken-4" @click.prevent="handleSubmit"
+          <v-btn
+            text
+            color="light-blue darken-4"
+            @click.prevent="update == true ? handleUpdate() : handleSubmit()"
             >Adicionar</v-btn
           >
         </v-card-actions>
@@ -76,6 +80,12 @@
       :show="stored"
       @hide="stored = false"
     />
+    <Snackbar
+      type="success"
+      :text="snackText"
+      :show="updated"
+      @hide="updated = false"
+    />
   </div>
 </template>
 <script>
@@ -86,9 +96,9 @@ export default {
   components: {
     Snackbar,
   },
+  props: ["dataToUpdate"],
   data() {
     return {
-      snackText: "Disciplina Adicionada com Sucesso!",
       form: { code: "", name: "", workload: "", departamento_id: "" },
       workload: [30, 60],
       departamentos: [],
@@ -116,6 +126,8 @@ export default {
         (v) => /([0-9]+)/.test(v),
       ],
       stored: false,
+      update: false,
+      updated: false,
     };
   },
   created() {
@@ -138,6 +150,21 @@ export default {
         console.log(error);
       }
     },
+    //new
+    async handleUpdate() {
+      try {
+        if (this.$refs.addDisciplina.validate()) {
+          var updatedData = await disciplinaService.update(this.form);
+          this.$emit("handleUpdate", updatedData.data);
+          this.dialog = false;
+          this.updated = true;
+          this.update = false;
+          this.form = {};
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    },
     getDepartamentos() {
       departamentoService.get().then((response) => {
         response.data.map((item) => {
@@ -147,9 +174,29 @@ export default {
           });
         });
       });
-      //   this.departamentos.sort((a, b) => {
-      //     return a.abbreviation.localeCompare(b.abbreviation);
-      //   });
+    },
+    getOne() {
+      disciplinaService.getOne(this.dataToUpdate).then((response) => {
+        this.form = response.data;
+      });
+      this.dialog = true;
+      this.update = true;
+    },
+    cancelUpdate() {
+      this.update = false;
+      this.$emit("cancelUpdate");
+    },
+  },
+  watch: {
+    dataToUpdate() {
+      if (this.dataToUpdate != null) this.getOne();
+    },
+  },
+  computed: {
+    snackText() {
+      return this.updated == false
+        ? "Disciplina Adicionada com Sucesso!"
+        : "Disciplina Atualizada com Sucesso!";
     },
   },
 };

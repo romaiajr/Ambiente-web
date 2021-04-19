@@ -14,9 +14,7 @@
         + Adicionar
       </v-btn>
       <v-card>
-        <v-toolbar color="primary" dark
-          ><h2>Adicionar Nova Turma</h2></v-toolbar
-        >
+        <v-toolbar dark><h2>Adicionar Nova Turma</h2></v-toolbar>
         <v-card-text class="pt-6">
           <v-form v-model="validForm" ref="addTurma">
             <v-select

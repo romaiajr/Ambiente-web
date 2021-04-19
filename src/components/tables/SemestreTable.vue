@@ -42,7 +42,6 @@ import headers from "../../utils/headers.json";
 import semestreService from "../../services/semestreService";
 import AddSemestre from "../forms/AddSemestre";
 export default {
-  props: ["value"],
   components: {
     AddSemestre,
     Table,

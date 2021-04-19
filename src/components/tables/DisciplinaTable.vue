@@ -20,7 +20,12 @@
                 ></v-text-field>
               </v-col>
               <v-col class="d-flex justify-end" cols="12" sm="4">
-                <AddDisciplina @handleSubmit="handleSubmit" />
+                <AddDisciplina
+                  @handleSubmit="handleSubmit"
+                  :dataToUpdate="dataToUpdate"
+                  @handleUpdate="updateData"
+                  @cancelUpdate="dataToUpdate = null"
+                />
               </v-col>
             </v-row>
           </v-card-subtitle>
@@ -28,8 +33,10 @@
             :loading="data == undefined"
             :headers="headers"
             :filteredList="filteredList"
-            notFound="Nenhuma Disciplina Encontrada"
-            @teste="teste"
+            :notFound="notFound"
+            @handleDelete="handleDelete"
+            :waiting="waiting"
+            @handleUpdate="handleUpdate"
           />
         </v-card>
       </v-col>
@@ -42,7 +49,6 @@ import headers from "../../utils/headers.json";
 import disciplinaService from "../../services/disciplinaService";
 import AddDisciplina from "../forms/AddDisciplina";
 export default {
-  props: ["value"],
   components: {
     AddDisciplina,
     Table,
@@ -52,6 +58,8 @@ export default {
       data: undefined,
       searchQuery: "",
       headers: "",
+      waiting: false,
+      dataToUpdate: null,
     };
   },
   created() {
@@ -71,6 +79,13 @@ export default {
         return this.data;
       }
     },
+    notFound() {
+      if (this.data == undefined || this.data.length == 0) {
+        return "Ainda não foram cadastradas disciplinas";
+      } else {
+        return "Nenhuma disciplina encontrada";
+      }
+    },
   },
   methods: {
     componentStructure() {
@@ -84,6 +99,28 @@ export default {
     handleSubmit(data) {
       this.data.push(data);
     },
+    handleUpdate(item) {
+      this.dataToUpdate = item.id;
+    },
+    updateData(updatedData) {
+      var index = this.data.findIndex((item) => {
+        return item.id == updatedData.id;
+      });
+      this.data[index].name = updatedData.name;
+      this.data[index].workload = updatedData.workload;
+    },
+    async handleDelete(selectedItem) {
+      try {
+        this.waiting = true;
+        await disciplinaService.destroy(selectedItem.id);
+        this.data = this.data.filter((item) => {
+          return item.id != selectedItem.id;
+        });
+        this.waiting = false;
+      } catch (error) {
+        console.log(error);
+      }
+    },
     removeSpecial(texto) {
       texto = texto.replace(/[ÀÁÂÃÄÅ]/, "A");
       texto = texto.replace(/[àáâãäå]/, "a");
@@ -91,9 +128,6 @@ export default {
       texto = texto.replace(/[Ç]/, "C");
       texto = texto.replace(/[ç]/, "c");
       return texto;
-    },
-    teste() {
-      alert("oi");
     },
   },
 };

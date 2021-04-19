@@ -7,6 +7,7 @@
         () => {
           form = {};
           this.$refs.addDepartamento.reset();
+          if (this.update == true) this.cancelUpdate();
         }
       "
     >
@@ -14,9 +15,7 @@
         + Adicionar
       </v-btn>
       <v-card>
-        <v-toolbar color="primary" dark
-          ><h2>Adicionar Novo Departamento</h2></v-toolbar
-        >
+        <v-toolbar dark><h2>Adicionar Novo Departamento</h2></v-toolbar>
         <v-card-text class="pt-6">
           <v-form v-model="validForm" ref="addDepartamento">
             <v-text-field
@@ -26,13 +25,14 @@
               :rules="abbreviatonRules"
               label="Sigla do Departamento"
               required
+              :disabled="update"
             ></v-text-field>
             <v-text-field
               v-model="form.name"
               :rules="nameRules"
               label="Nome do Departamento"
               required
-              @keyup.enter="handleSubmit"
+              @keyup.enter="update == true ? handleUpdate() : handleSubmit()"
             ></v-text-field>
           </v-form>
         </v-card-text>
@@ -44,11 +44,15 @@
               () => {
                 dialog = false;
                 this.$refs.addDepartamento.reset();
+                if (update == true) this.cancelUpdate();
               }
             "
             >Cancelar</v-btn
           >
-          <v-btn text color="light-blue darken-4" @click.prevent="handleSubmit"
+          <v-btn
+            text
+            color="light-blue darken-4"
+            @click.prevent="update == true ? handleUpdate() : handleSubmit()"
             >Adicionar</v-btn
           >
         </v-card-actions>
@@ -60,6 +64,12 @@
       :show="stored"
       @hide="stored = false"
     />
+    <Snackbar
+      type="success"
+      :text="snackText"
+      :show="updated"
+      @hide="updated = false"
+    />
   </div>
 </template>
 <script>
@@ -69,9 +79,9 @@ export default {
   components: {
     Snackbar,
   },
+  props: ["dataToUpdate"],
   data() {
     return {
-      snackText: "Departamento Adicionado com Sucesso!",
       form: { abbreviation: "", name: "" },
       dialog: false,
       validForm: undefined,
@@ -88,6 +98,8 @@ export default {
           "Nome do departamento deve conter apenas letras",
       ],
       stored: false,
+      update: false,
+      updated: false,
     };
   },
   methods: {
@@ -100,11 +112,51 @@ export default {
           this.dialog = false;
           this.$emit("handleSubmit", this.form);
           this.stored = true;
-          this.form = {};
+          this.form = { abbreviation: "", name: "" };
         }
       } catch (error) {
         console.log(error);
       }
+    },
+    //new
+    async handleUpdate() {
+      try {
+        if (this.$refs.addDepartamento.validate()) {
+          var updatedData = await departamentoService.update(this.form);
+          this.$emit("handleUpdate", updatedData.data);
+          this.dialog = false;
+          this.updated = true;
+          this.update = false;
+          this.form = { abbreviation: "", name: "" };
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    //new
+    getOne() {
+      departamentoService.getOne(this.dataToUpdate).then((response) => {
+        this.form = response.data;
+      });
+      this.dialog = true;
+      this.update = true;
+    },
+    //new
+    cancelUpdate() {
+      this.update = false;
+      this.$emit("cancelUpdate");
+    },
+  },
+  watch: {
+    dataToUpdate() {
+      if (this.dataToUpdate != null) this.getOne();
+    },
+  },
+  computed: {
+    snackText() {
+      return this.updated == false
+        ? "Departamento Adicionado com Sucesso!"
+        : "Departamento Atualizado com Sucesso!";
     },
   },
 };

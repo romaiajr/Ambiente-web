@@ -1,20 +1,24 @@
 {
   "departamento": [
     { "text": "Sigla", "value": "abbreviation" },
-    { "text": "Nome", "value": "name" }
+    { "text": "Nome", "value": "name" },
+    { "text": "Actions", "value": "action", "sortable": false }
   ],
   "disciplinas": [
     { "text": "Código", "value": "code" },
-    { "text": "Disciplina", "value": "name" }
+    { "text": "Disciplina", "value": "name" },
+    { "text": "Actions", "value": "action", "sortable": false }
   ],
   "semestres": [
     { "text": "Código", "value": "code" },
     { "text": "Data de Início", "value": "start_date" },
-    { "text": "Data de Termino", "value": "end_date" }
+    { "text": "Data de Termino", "value": "end_date" },
+    { "text": "Actions", "value": "action", "sortable": false }
   ],
   "turmas": [
     { "text": "Código", "value": "code" },
     { "text": "Disciplina", "value": "disciplina_name" },
-    { "text": "Semestre", "value": "semestre_code" }
+    { "text": "Semestre", "value": "semestre_code" },
+    { "text": "Actions", "value": "action", "sortable": false }
   ]
 }

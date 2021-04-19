@@ -9,4 +9,13 @@ export default {
   destroy: (obj) => {
     return api.delete("/disciplinas", { data: obj });
   },
+  getOne: (obj) => {
+    return api.get(`/disciplinas/${obj}`);
+  },
+  update: (obj) => {
+    return api.patch(`/disciplinas/${obj.id}`, {
+      name: obj.name,
+      workload: obj.workload,
+    });
+  },
 };

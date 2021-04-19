@@ -14,9 +14,7 @@
         + Adicionar
       </v-btn>
       <v-card>
-        <v-toolbar color="primary" dark
-          ><h2>Adicionar Nova Disciplina</h2></v-toolbar
-        >
+        <v-toolbar dark><h2>Adicionar Nova Disciplina</h2></v-toolbar>
         <v-card-text class="pt-6">
           <v-form v-model="validForm" ref="addSemestre">
             <v-text-field
@@ -173,6 +171,7 @@ export default {
       today = yyyy + "-" + mm + "-" + dd;
       return today;
     },
+    // Fazer tratamento de mês
     minEndDate() {
       if (this.form.start_date) {
         var min = this.form.start_date;

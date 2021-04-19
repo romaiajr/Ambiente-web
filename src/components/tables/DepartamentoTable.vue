@@ -20,16 +20,25 @@
                 ></v-text-field>
               </v-col>
               <v-col class="d-flex justify-end" cols="12" sm="4">
-                <AddDepartamento @handleSubmit="handleSubmit" />
+                <!-- New -->
+                <AddDepartamento
+                  @handleSubmit="handleSubmit"
+                  :dataToUpdate="dataToUpdate"
+                  @handleUpdate="updateData"
+                  @cancelUpdate="dataToUpdate = null"
+                />
               </v-col>
             </v-row>
           </v-card-subtitle>
+          <!-- New -->
           <Table
             :loading="data == undefined"
             :headers="headers"
             :filteredList="filteredList"
-            notFound="Nenhum Departamento Encontrado"
-            @teste="teste"
+            :notFound="notFound"
+            @handleDelete="handleDelete"
+            :waiting="waiting"
+            @handleUpdate="handleUpdate"
           />
         </v-card>
       </v-col>
@@ -42,7 +51,6 @@ import headers from "../../utils/headers.json";
 import departamentoService from "../../services/departamentoService";
 import AddDepartamento from "../forms/AddDepartamento";
 export default {
-  props: ["value"],
   components: {
     AddDepartamento,
     Table,
@@ -52,6 +60,8 @@ export default {
       data: undefined,
       searchQuery: "",
       headers: "",
+      waiting: false,
+      dataToUpdate: null,
     };
   },
   created() {
@@ -71,18 +81,55 @@ export default {
         return this.data;
       }
     },
+    // NEW
+    notFound() {
+      if (this.data == undefined || this.data.length == 0) {
+        return "Ainda não foram cadastrados departamentos";
+      } else {
+        return "Nenhum departamento encontrado";
+      }
+    },
   },
   methods: {
     componentStructure() {
       this.headers = headers.departamento;
-      departamentoService.get().then((response) => {
-        this.data = response.data.sort((a, b) => {
-          return a.abbreviation.localeCompare(b.abbreviation);
+      try {
+        departamentoService.get().then((response) => {
+          this.data = response.data.sort((a, b) => {
+            return a.abbreviation.localeCompare(b.abbreviation);
+          });
         });
-      });
+      } catch (error) {
+        console.log(error);
+      }
     },
     handleSubmit(data) {
       this.data.push(data);
+    },
+    // NEW
+    handleUpdate(item) {
+      this.dataToUpdate = item.id;
+    },
+    // NEW
+    updateData(updatedData) {
+      var index = this.data.findIndex((item) => {
+        return item.id == updatedData.id;
+      });
+      this.data[index].name = updatedData.name;
+      this.dataToUpdate = null;
+    },
+    // NEW
+    async handleDelete(selectedItem) {
+      try {
+        this.waiting = true;
+        await departamentoService.destroy(selectedItem.id);
+        this.data = this.data.filter((item) => {
+          return item.id != selectedItem.id;
+        });
+        this.waiting = false;
+      } catch (error) {
+        console.log(error);
+      }
     },
     removeSpecial(texto) {
       texto = texto.replace(/[ÀÁÂÃÄÅ]/, "A");
@@ -91,9 +138,6 @@ export default {
       texto = texto.replace(/[Ç]/, "C");
       texto = texto.replace(/[ç]/, "c");
       return texto;
-    },
-    teste() {
-      alert("oi");
     },
   },
 };

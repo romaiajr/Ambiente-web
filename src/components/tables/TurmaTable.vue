@@ -42,7 +42,6 @@ import headers from "../../utils/headers.json";
 import turmaService from "../../services/turmaService";
 import AddTurma from "../forms/AddTurma";
 export default {
-  props: ["value"],
   components: {
     AddTurma,
     Table,
