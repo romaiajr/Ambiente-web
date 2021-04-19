@@ -15,10 +15,7 @@
       <v-divider></v-divider>
       <!-- Function List -->
       <v-list nav>
-        <v-list-item-group
-          v-model="group"
-          active-class="deep-purple--text text--accent-4"
-        >
+        <v-list-item-group v-model="group" active-class="text--accent-4">
           <v-list-item
             v-for="(item, idx) in navItems"
             :key="idx"
@@ -33,7 +30,7 @@
       </v-list>
     </v-navigation-drawer>
 
-    <v-app-bar color="black accent-4" dark>
+    <v-app-bar dark>
       <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
       <v-toolbar-title>Ambiente Web</v-toolbar-title>
       <v-spacer></v-spacer>
