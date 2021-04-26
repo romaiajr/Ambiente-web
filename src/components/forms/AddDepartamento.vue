@@ -15,7 +15,15 @@
         + Adicionar
       </v-btn>
       <v-card>
-        <v-toolbar dark><h2>Adicionar Novo Departamento</h2></v-toolbar>
+        <v-toolbar dark
+          ><h2>
+            {{
+              update == true
+                ? "Editar departamento"
+                : "Adicionar novo departamento"
+            }}
+          </h2></v-toolbar
+        >
         <v-card-text class="pt-6">
           <v-form v-model="validForm" ref="addDepartamento">
             <v-text-field
@@ -23,14 +31,14 @@
               @keyup="form.abbreviation = $event.target.value.toUpperCase()"
               @keyup.enter="handleSubmit"
               :rules="abbreviatonRules"
-              label="Sigla do Departamento"
+              label="Sigla do departamento"
               required
               :disabled="update"
             ></v-text-field>
             <v-text-field
               v-model="form.name"
               :rules="nameRules"
-              label="Nome do Departamento"
+              label="Nome do departamento"
               required
               @keyup.enter="update == true ? handleUpdate() : handleSubmit()"
             ></v-text-field>
@@ -53,7 +61,7 @@
             text
             color="light-blue darken-4"
             @click.prevent="update == true ? handleUpdate() : handleSubmit()"
-            >Adicionar</v-btn
+            >{{ update == true ? "Confirmar edição" : "Adicionar" }}</v-btn
           >
         </v-card-actions>
       </v-card>

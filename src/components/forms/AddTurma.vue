@@ -38,7 +38,7 @@
               v-model="form.number_of_classes"
               @keyup.enter="handleSubmit"
               :rules="numberRules"
-              label="Número de Turmas"
+              label="Número de turmas"
               required
             ></v-text-field>
           </v-form>

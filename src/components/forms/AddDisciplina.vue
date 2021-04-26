@@ -7,6 +7,7 @@
         () => {
           form = {};
           this.$refs.addDisciplina.reset();
+          if (update == true) this.cancelUpdate();
         }
       "
     >
@@ -14,7 +15,13 @@
         + Adicionar
       </v-btn>
       <v-card>
-        <v-toolbar dark><h2>Adicionar Nova Disciplina</h2></v-toolbar>
+        <v-toolbar dark
+          ><h2>
+            {{
+              update == true ? "Editar disciplina" : "Adicionar nova disciplina"
+            }}
+          </h2></v-toolbar
+        >
         <v-card-text class="pt-6">
           <v-form v-model="validForm" ref="addDisciplina">
             <v-text-field
@@ -22,21 +29,21 @@
               @keyup="form.code = $event.target.value.toUpperCase()"
               @keyup.enter="handleSubmit"
               :rules="codeRules"
-              label="Código da Disciplina"
+              label="Código da disciplina"
               required
               :disabled="update"
             ></v-text-field>
             <v-text-field
               v-model="form.name"
               :rules="nameRules"
-              label="Nome da Disciplina"
+              label="Nome da disciplina"
               required
               @keyup.enter="update == true ? handleUpdate() : handleSubmit()"
             ></v-text-field>
             <v-select
               v-model="form.workload"
               :rules="workloadRules"
-              label="Carga Horária da Disciplina"
+              label="Carga horária da disciplina"
               required
               @keyup.enter="update == true ? handleUpdate() : handleSubmit()"
               :items="workload"
@@ -60,7 +67,7 @@
               () => {
                 dialog = false;
                 this.$refs.addDisciplina.reset();
-                this.update = false;
+                if (update == true) this.cancelUpdate();
               }
             "
             >Cancelar</v-btn
@@ -69,7 +76,7 @@
             text
             color="light-blue darken-4"
             @click.prevent="update == true ? handleUpdate() : handleSubmit()"
-            >Adicionar</v-btn
+            >{{ update == true ? "Confirmar edição" : "Adicionar" }}</v-btn
           >
         </v-card-actions>
       </v-card>

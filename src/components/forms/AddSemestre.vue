@@ -15,7 +15,11 @@
         + Adicionar
       </v-btn>
       <v-card>
-        <v-toolbar dark><h2>Adicionar Nova Disciplina</h2></v-toolbar>
+        <v-toolbar dark
+          ><h2>
+            {{ update == true ? "Editar semestre" : "Adicionar novo semestre" }}
+          </h2></v-toolbar
+        >
         <v-card-text class="pt-6">
           <v-form v-model="validForm" ref="addSemestre">
             <v-text-field
@@ -117,7 +121,8 @@
             text
             color="light-blue darken-4"
             @click.prevent="update == true ? handleUpdate() : handleSubmit()"
-            >Adicionar</v-btn
+          >
+            {{ update == true ? "Confirmar edição" : "Adicionar" }}</v-btn
           >
         </v-card-actions>
       </v-card>
