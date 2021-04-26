@@ -108,9 +108,9 @@ export default {
       this.form.name.trim();
       try {
         if (this.$refs.addDepartamento.validate()) {
-          await departamentoService.store(this.form);
+          var departamento = await departamentoService.store(this.form);
           this.dialog = false;
-          this.$emit("handleSubmit", this.form);
+          this.$emit("handleSubmit", departamento.data);
           this.stored = true;
           this.form = { abbreviation: "", name: "" };
         }

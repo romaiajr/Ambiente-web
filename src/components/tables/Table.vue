@@ -33,6 +33,25 @@
           >Remover</v-btn
         >
       </template>
+      <template v-slot:item.actionTurma="{ item }">
+        <v-btn @click="handleTutor(item)" elevation="2" small color="info" tile
+          >Tutor</v-btn
+        >
+        <v-btn
+          @click="
+            () => {
+              confirmDialog = true;
+              selectedItem = item;
+            }
+          "
+          elevation="2"
+          small
+          color="error"
+          tile
+          class="ml-2"
+          >Remover</v-btn
+        >
+      </template>
     </v-data-table>
     <v-dialog
       v-model="confirmDialog"
@@ -83,6 +102,9 @@ export default {
     },
     handleUpdate(item) {
       this.$emit("handleUpdate", item);
+    },
+    handleTutor(item) {
+      this.$emit("handleTutor", item);
     },
   },
   watch: {

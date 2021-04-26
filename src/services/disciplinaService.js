@@ -7,7 +7,7 @@ export default {
     return api.post("/disciplinas", obj);
   },
   destroy: (obj) => {
-    return api.delete("/disciplinas", { data: obj });
+    return api.delete(`/disciplinas/${obj}`, { data: obj });
   },
   getOne: (obj) => {
     return api.get(`/disciplinas/${obj}`);

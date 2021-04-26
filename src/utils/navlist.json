@@ -15,6 +15,11 @@
       "title": "Turmas",
       "icon": "mdi-google-classroom",
       "value": 4
+    },
+    {
+      "title": "Log do Sistema",
+      "icon": "mdi-google-classroom",
+      "value": 5
     }
   ]
 }

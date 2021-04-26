@@ -9,6 +9,6 @@ export default {
     return api.post("/turmas", obj);
   },
   destroy: (obj) => {
-    return api.delete("/turmas", { data: obj });
+    return api.delete(`/turmas/${obj}`, { data: obj });
   },
 };

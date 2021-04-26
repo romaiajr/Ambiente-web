@@ -28,8 +28,9 @@
             :loading="data == undefined"
             :headers="headers"
             :filteredList="filteredList"
-            notFound="Nenhuma turma encontrada"
-            @teste="teste"
+            :notFound="notFound"
+            @handleDelete="handleDelete"
+            :waiting="waiting"
           />
         </v-card>
       </v-col>
@@ -51,6 +52,7 @@ export default {
       data: undefined,
       searchQuery: "",
       headers: "",
+      waiting: false,
     };
   },
   created() {
@@ -72,6 +74,13 @@ export default {
         return this.data;
       }
     },
+    notFound() {
+      if (this.data == undefined || this.data.length == 0) {
+        return "Ainda não foram cadastradas turmas";
+      } else {
+        return "Nenhuma turma encontrada";
+      }
+    },
   },
   methods: {
     componentStructure() {
@@ -80,9 +89,9 @@ export default {
         let items = response.data.sort((a, b) => {
           return a.disciplina_name.localeCompare(b.disciplina_name);
         });
+        this.data = [];
         items.map((item) => {
           item.code = `${item.disciplina_code}-${item.code}`;
-          this.data = [];
           this.data.push(item);
         });
       });
@@ -91,6 +100,18 @@ export default {
       data.code = `${data.disciplina_code}-${data.code}`;
       this.data.push(data);
     },
+    async handleDelete(selectedItem) {
+      try {
+        this.waiting = true;
+        await turmaService.destroy(selectedItem.id);
+        this.data = this.data.filter((item) => {
+          return item.id != selectedItem.id;
+        });
+        this.waiting = false;
+      } catch (error) {
+        console.log(error);
+      }
+    },
     removeSpecial(texto) {
       texto = texto.replace(/[ÀÁÂÃÄÅ]/, "A");
       texto = texto.replace(/[àáâãäå]/, "a");
@@ -98,9 +119,6 @@ export default {
       texto = texto.replace(/[Ç]/, "C");
       texto = texto.replace(/[ç]/, "c");
       return texto;
-    },
-    teste() {
-      alert("oi");
     },
   },
 };

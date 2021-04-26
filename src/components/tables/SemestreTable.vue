@@ -100,7 +100,6 @@ export default {
       });
     },
     handleSubmit(data) {
-      this.data = [];
       this.data.push(data);
     },
     handleUpdate(item) {

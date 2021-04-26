@@ -100,7 +100,7 @@ export default {
   data() {
     return {
       form: { code: "", name: "", workload: "", departamento_id: "" },
-      workload: [30, 60],
+      workload: [30, 45, 60, 90],
       departamentos: [],
       dialog: false,
       validForm: undefined,
@@ -140,9 +140,9 @@ export default {
       console.log(this.form);
       try {
         if (this.$refs.addDisciplina.validate()) {
-          await disciplinaService.store(this.form);
+          var disciplina = await disciplinaService.store(this.form);
           this.dialog = false;
-          this.$emit("handleSubmit", this.form);
+          this.$emit("handleSubmit", disciplina.data);
           this.stored = true;
           this.form = {};
         }

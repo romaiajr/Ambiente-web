@@ -19,6 +19,6 @@
     { "text": "Código", "value": "code" },
     { "text": "Disciplina", "value": "disciplina_name" },
     { "text": "Semestre", "value": "semestre_code" },
-    { "text": "Actions", "value": "action", "sortable": false }
+    { "text": "Actions", "value": "actionTurma", "sortable": false }
   ]
 }

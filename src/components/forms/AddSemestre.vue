@@ -170,9 +170,9 @@ export default {
       if (this.form.end_date) this.form.end_date.trim();
       try {
         if (this.$refs.addSemestre.validate()) {
-          await semestreService.store(this.form);
+          var semestre = await semestreService.store(this.form);
           this.dialog = false;
-          this.$emit("handleSubmit", this.form);
+          this.$emit("handleSubmit", semestre.data);
           this.stored = true;
           this.form = {};
         }
