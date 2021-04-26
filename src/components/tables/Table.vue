@@ -58,6 +58,7 @@
       max-width="500"
       :disabled="waiting"
       :persistent="waiting"
+      @keydown.enter="handleDelete"
     >
       <v-card>
         <v-toolbar dark
@@ -70,17 +71,17 @@
         <v-card-actions class="justify-end">
           <v-btn
             text
-            color="light-blue darken-4"
-            @click="handleDelete"
-            :disabled="waiting"
-            >Remover</v-btn
-          >
-          <v-btn
-            text
             color="red darken-1"
             @click="confirmDialog = false"
             :disabled="waiting"
             >Cancelar</v-btn
+          >
+          <v-btn
+            text
+            color="light-blue darken-4"
+            @click="handleDelete"
+            :disabled="waiting"
+            >Remover</v-btn
           >
         </v-card-actions>
       </v-card>

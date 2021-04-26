@@ -100,7 +100,12 @@ export default {
       });
     },
     handleSubmit(data) {
+      data.start_date = this.formatDate(data.start_date);
+      data.end_date = this.formatDate(data.end_date);
       this.data.push(data);
+      this.data = this.data.sort((a, b) => {
+        return a.code.localeCompare(b.code);
+      });
     },
     handleUpdate(item) {
       this.dataToUpdate = item.id;

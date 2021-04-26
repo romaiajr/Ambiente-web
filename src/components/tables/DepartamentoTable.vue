@@ -105,6 +105,9 @@ export default {
     },
     handleSubmit(data) {
       this.data.push(data);
+      this.data = this.data.sort((a, b) => {
+        return a.abbreviation.localeCompare(b.abbreviation);
+      });
     },
     // NEW
     handleUpdate(item) {

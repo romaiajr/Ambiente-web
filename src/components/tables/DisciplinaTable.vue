@@ -98,6 +98,9 @@ export default {
     },
     handleSubmit(data) {
       this.data.push(data);
+      this.data = this.data.sort((a, b) => {
+        return a.code.localeCompare(b.code);
+      });
     },
     handleUpdate(item) {
       this.dataToUpdate = item.id;

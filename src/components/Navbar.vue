@@ -43,6 +43,7 @@ export default {
   data: () => ({
     drawer: false,
     group: null,
+    deviceWidth: undefined,
   }),
   computed: {
     navItems() {
@@ -52,6 +53,15 @@ export default {
   methods: {
     handleClick(value) {
       this.$emit("clicked", value);
+      if (this.deviceWidth <= 1264) {
+        this.drawer = !this.drawer;
+      }
+    },
+  },
+  watch: {
+    drawer() {
+      this.deviceWidth =
+        window.innerWidth > 0 ? window.innerWidth : screen.width;
     },
   },
 };

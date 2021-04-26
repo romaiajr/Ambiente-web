@@ -99,6 +99,9 @@ export default {
     handleSubmit(data) {
       data.code = `${data.disciplina_code}-${data.code}`;
       this.data.push(data);
+      this.data = this.data.sort((a, b) => {
+        return a.code.localeCompare(b.code);
+      });
     },
     async handleDelete(selectedItem) {
       try {
