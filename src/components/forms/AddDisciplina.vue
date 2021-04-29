@@ -144,7 +144,6 @@ export default {
     async handleSubmit() {
       this.form.code.trim();
       this.form.name.trim();
-      console.log(this.form);
       try {
         if (this.$refs.addDisciplina.validate()) {
           var disciplina = await disciplinaService.store(this.form);
@@ -152,6 +151,7 @@ export default {
           this.$emit("handleSubmit", disciplina.data);
           this.stored = true;
           this.form = {};
+          this.$refs.addDisciplina.reset();
         }
       } catch (error) {
         console.log(error);

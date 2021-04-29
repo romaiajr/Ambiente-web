@@ -27,7 +27,7 @@
               @keyup="form.code = $event.target.value.toUpperCase()"
               @keyup.enter="handleSubmit"
               :rules="codeRules"
-              label="Código da Disciplina"
+              label="Código do semestre"
               required
               :disabled="update"
             ></v-text-field>
@@ -42,7 +42,7 @@
               <template v-slot:activator="{ on, attrs }">
                 <v-text-field
                   v-model="form.start_date"
-                  label="Data de Início do Semestre"
+                  label="Data de início do semestre"
                   prepend-icon="mdi-calendar"
                   readonly
                   v-bind="attrs"
@@ -77,7 +77,7 @@
               <template v-slot:activator="{ on, attrs }">
                 <v-text-field
                   v-model="form.end_date"
-                  label="Data de Término do Semestre"
+                  label="Data de término do semestre"
                   prepend-icon="mdi-calendar"
                   readonly
                   v-bind="attrs"
@@ -180,6 +180,7 @@ export default {
           this.$emit("handleSubmit", semestre.data);
           this.stored = true;
           this.form = {};
+          this.$refs.addSemestre.reset();
         }
       } catch (error) {
         console.log(error);

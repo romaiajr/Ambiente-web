@@ -121,6 +121,7 @@ export default {
           this.$emit("handleSubmit", departamento.data);
           this.stored = true;
           this.form = { abbreviation: "", name: "" };
+          this.$refs.addDepartamento.reset();
         }
       } catch (error) {
         console.log(error);
