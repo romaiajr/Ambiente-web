@@ -1,5 +1,5 @@
 <template>
-  <v-snackbar v-model="show" :color="type" bottom right>
+  <v-snackbar v-model="show" :color="type" right bottom>
     <h3 style="margin: 0px !important">
       {{ text }}
     </h3>

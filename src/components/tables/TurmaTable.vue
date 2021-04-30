@@ -21,6 +21,7 @@
               </v-col>
               <v-col class="d-flex justify-end" cols="12" sm="4">
                 <AddTurma @handleSubmit="handleSubmit" />
+                <AddTutor :turma="turma" @cancelTutor="turma = null" />
               </v-col>
             </v-row>
           </v-card-subtitle>
@@ -31,6 +32,7 @@
             :notFound="notFound"
             @handleDelete="handleDelete"
             :waiting="waiting"
+            @handleTutor="handleTutor"
           />
         </v-card>
       </v-col>
@@ -42,9 +44,11 @@ import Table from "./Table";
 import headers from "../../utils/headers.json";
 import turmaService from "../../services/turmaService";
 import AddTurma from "../forms/AddTurma";
+import AddTutor from "../forms/AddTutor";
 export default {
   components: {
     AddTurma,
+    AddTutor,
     Table,
   },
   data() {
@@ -53,6 +57,7 @@ export default {
       searchQuery: "",
       headers: "",
       waiting: false,
+      turma: undefined,
     };
   },
   created() {
@@ -115,6 +120,10 @@ export default {
         console.log(error);
       }
     },
+    handleTutor(item) {
+      this.turma = item;
+    },
+
     removeSpecial(texto) {
       texto = texto.replace(/[ÀÁÂÃÄÅ]/, "A");
       texto = texto.replace(/[àáâãäå]/, "a");

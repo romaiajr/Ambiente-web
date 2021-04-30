@@ -11,4 +11,13 @@ export default {
   destroy: (obj) => {
     return api.delete(`/turmas/${obj}`, { data: obj });
   },
+  getTutores: (obj) => {
+    return api.get(`turma-tutor/${obj}`);
+  },
+  getUserByType: () => {
+    return api.get(`/users-by-type/tutor`);
+  },
+  addTutor: (obj) => {
+    return api.post("/turma-tutor", obj);
+  },
 };

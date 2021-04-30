@@ -28,7 +28,7 @@
                           transition="fade-transition"
                         >
                           Usuário e Senha não correspondem às informações em
-                          nosso registros. Tente novamente.
+                          nossos registros. Tente novamente.
                         </v-alert>
                         <v-form
                           v-model="validLogin"
