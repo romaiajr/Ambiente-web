@@ -15,6 +15,10 @@ const routes = [
     path: "/user",
     name: "Management",
     component: Management,
+    beforeEnter: (to, from, next) => {
+      if (sessionStorage.getItem("token") != undefined) next();
+      else next({ name: "Login" });
+    },
   },
 ];
 
