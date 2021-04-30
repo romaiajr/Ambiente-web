@@ -182,7 +182,7 @@
 </template>
 <script>
 import authService from "../services/authService";
-import router from "../router";
+// import router from "../router";
 export default {
   data: () => ({
     formLogin: { username: "", password: "" },
@@ -205,8 +205,9 @@ export default {
           this.usernameRules = [(v) => !!v || "Insira um nome de usuário"];
           this.passwordRules = [(v) => !!v || "Insira uma senha"];
           if (this.$refs.signin.validate()) {
-            await authService.login(this.formLogin);
-            router.push("user");
+            var token = await authService.login(this.formLogin);
+            sessionStorage.setItem("token", token.data.token);
+            window.location.replace("http://localhost:8080/user");
           }
         }
         // Registration Form

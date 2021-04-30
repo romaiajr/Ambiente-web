@@ -1,12 +1,10 @@
 import api from "./api.js";
+import auth from "./authorization";
 export default {
   get: () => {
-    return api.get("/disciplinas-ofertadas");
+    return api.get("/disciplinas-ofertadas", auth);
   },
   store: (obj) => {
-    return api.post("/disciplinas-ofertadas", obj);
-  },
-  destroy: (obj) => {
-    return api.delete("/disciplinas-ofertadas", { data: obj });
+    return api.post("/disciplinas-ofertadas", obj, auth);
   },
 };

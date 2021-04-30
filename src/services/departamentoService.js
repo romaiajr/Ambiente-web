@@ -1,18 +1,20 @@
 import api from "./api.js";
+import auth from "./authorization";
 export default {
   get: () => {
-    return api.get("/departamentos");
+    return api.get("/departamentos", auth);
   },
   store: (obj) => {
-    return api.post("/departamentos", obj);
+    return api.post("/departamentos", obj, auth);
   },
   destroy: (obj) => {
-    return api.delete(`/departamentos/${obj}`, { data: obj });
+    return api.delete(`/departamentos/${obj}`, auth);
   },
   getOne: (obj) => {
-    return api.get(`/departamentos/${obj}`);
+    return api.get(`/departamentos/${obj}`, auth);
   },
   update: (obj) => {
-    return api.patch(`/departamentos/${obj.id}`, { name: obj.name });
+    var dataToUpdate = { name: obj.name };
+    return api.put(`/departamentos/${obj.id}`, dataToUpdate, auth);
   },
 };

@@ -14,7 +14,7 @@
         <v-card-text class="pt-6">
           <v-form ref="addTutor">
             <div v-if="alocados.length >= 1">
-              <h6>Tutores previamente designados para a disciplina</h6>
+              <h4>Tutores previamente designados para a disciplina</h4>
               <v-chip
                 v-for="item in alocados"
                 :key="item.value"
