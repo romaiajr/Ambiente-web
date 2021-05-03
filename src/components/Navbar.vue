@@ -40,6 +40,7 @@
 <script>
 import navlist from "../utils/navlist.json";
 export default {
+  props: ["current"],
   data: () => ({
     drawer: false,
     group: null,
@@ -62,6 +63,9 @@ export default {
     drawer() {
       this.deviceWidth =
         window.innerWidth > 0 ? window.innerWidth : screen.width;
+    },
+    current() {
+      this.group = this.current;
     },
   },
 };

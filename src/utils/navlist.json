@@ -1,6 +1,11 @@
 {
   "adm": [
     {
+      "title": "Menu Inicial",
+      "icon": "mdi-view-dashboard",
+      "value": 0
+    },
+    {
       "title": "Departamentos",
       "icon": "mdi-office-building-outline",
       "value": 1

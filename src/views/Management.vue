@@ -1,8 +1,9 @@
 <template>
   <v-app>
     <v-main
-      ><Navbar v-on:clicked="changeComponent" />
-      <DepartamentoTable v-if="current == 1" />
+      ><Navbar @clicked="changeComponent" :current="current" />
+      <MainMenu @clicked="changeComponent" v-if="current == 0" />
+      <DepartamentoTable v-else-if="current == 1" />
       <DisciplinaTable v-else-if="current == 2" />
       <SemestreTable v-else-if="current == 3" />
       <TurmaTable v-else-if="current == 4" />
@@ -15,16 +16,18 @@ import DepartamentoTable from "../components/tables/DepartamentoTable";
 import DisciplinaTable from "../components/tables/DisciplinaTable";
 import SemestreTable from "../components/tables/SemestreTable";
 import TurmaTable from "../components/tables/TurmaTable";
+import MainMenu from "../components/MainMenu";
 export default {
   components: {
     Navbar,
+    MainMenu,
     DepartamentoTable,
     DisciplinaTable,
     SemestreTable,
     TurmaTable,
   },
   data: () => ({
-    current: 1,
+    current: 0,
   }),
   methods: {
     changeComponent(value) {
