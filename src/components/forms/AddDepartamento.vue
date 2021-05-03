@@ -137,6 +137,7 @@ export default {
           this.updated = true;
           this.update = false;
           this.form = { abbreviation: "", name: "" };
+          this.$refs.addDepartamento.reset();
         }
       } catch (error) {
         console.log(error);

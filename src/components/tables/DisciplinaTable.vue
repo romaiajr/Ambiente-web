@@ -111,6 +111,7 @@ export default {
       });
       this.data[index].name = updatedData.name;
       this.data[index].workload = updatedData.workload;
+      this.dataToUpdate = null;
     },
     async handleDelete(selectedItem) {
       try {

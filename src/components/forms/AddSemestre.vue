@@ -195,6 +195,7 @@ export default {
           this.updated = true;
           this.update = false;
           this.form = {};
+          this.$refs.addSemestre.reset();
         }
       } catch (error) {
         console.log(error);
