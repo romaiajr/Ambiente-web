@@ -1,24 +1,25 @@
 <template>
-  <v-app>
+  <v-app id="login">
     <v-main>
       <v-container class="fill-height" fluid>
         <v-row align="center" justify="center">
-          <v-col cols="12" md="8" sm="8">
+          <v-col cols="12" md="5" sm="8">
             <v-card class="elevation-12">
               <v-window v-model="step">
                 <v-window-item :value="1">
                   <v-row>
-                    <v-col cols="12" md="8">
-                      <v-card-text
-                        class="mt-12"
-                        v-on:keyup.enter="handleSubmit"
-                      >
-                        <h2 class="text-center display-2 ">
+                    <v-col cols="12" md="12">
+                      <v-card-text class="mt-6" v-on:keyup.enter="handleSubmit">
+                        <h2 class="text-center display-1 ">
                           LOGIN
                         </h2>
-                        <h3 class="text-center ">
+                        <h6 class="text-center ">
                           Ambiente Web de Gerenciamento PBL
-                        </h3>
+                        </h6>
+                        <v-divider
+                          justify-center
+                          style="margin-top: 8px; width: 80%; margin-left: 10%"
+                        ></v-divider>
                         <v-alert
                           v-show="loginError && validLogin"
                           text
@@ -34,6 +35,7 @@
                           v-model="validLogin"
                           lazy-validation
                           ref="signin"
+                          class="mt-2"
                         >
                           <v-text-field
                             id="user"
@@ -52,39 +54,37 @@
                             :rules="passwordRules"
                           />
                         </v-form>
-                        <a
-                          ><h4 class="text-center mt-4">
-                            Esqueceu a senha?
-                          </h4></a
-                        >
-                        <div class="text-center mt-3">
-                          <v-btn block dark @click.prevent="handleSubmit"
-                            >ENTRAR</v-btn
+                        <div class="text-center">
+                          <v-btn text color="primary" small
+                            >ESQUECEU A SENHA?</v-btn
                           >
                         </div>
-                      </v-card-text>
-                    </v-col>
-                    <v-col cols="12" md="4" class="black">
-                      <v-card-text class="white--text mt-12">
-                        <h1 class="text-center display-1">Olá, Amigo(a)!</h1>
-                        <h4 class="text-center">
-                          Ainda não faz parte da nossa plataforma? Faça o
-                          cadastro e participe desta jornada com a gente!
-                        </h4>
+
                         <div class="text-center mt-3">
                           <v-btn
                             block
-                            outlined
-                            dark
+                            color="var(--primary-dark-color)"
+                            style="color: white"
+                            @click.prevent="handleSubmit"
+                            >ENTRAR</v-btn
+                          >
+                        </div>
+
+                        <div class="text-center mt-3">
+                          Ainda não tem conta?
+                          <v-btn
+                            text
+                            color="primary"
+                            small
                             @click="
                               () => {
                                 step++;
                                 loginError = false;
-                                formLogin = '';
+                                formLogin = { username: '', password: '' };
                                 this.$refs.signin.reset();
                               }
                             "
-                            >CRIAR NOVA CONTA</v-btn
+                            >CADASTRE-SE</v-btn
                           >
                         </div>
                       </v-card-text>
@@ -93,42 +93,11 @@
                 </v-window-item>
                 <v-window-item :value="2">
                   <v-row class="fill-height">
-                    <v-col cols="12" md="4" class="black">
-                      <v-card-text class="white--text mt-12">
+                    <v-col cols="12" md="12">
+                      <v-card-text class="mt-6" v-on:keyup.enter="handleSubmit">
                         <h1 class="text-center display-1">
-                          Bem-vindo de volta!
-                        </h1>
-                        <h4 class="text-center">
-                          Para se manter conectado com a gente, por favor insira
-                          suas informações pessoais
-                        </h4>
-                        <div class="text-center">
-                          <v-btn
-                            block
-                            outlined
-                            dark
-                            @click="
-                              () => {
-                                step--;
-                                formRegistration = '';
-                                this.$refs.signup.reset();
-                              }
-                            "
-                            class="mt-3"
-                            >REALIZAR LOGIN</v-btn
-                          >
-                        </div>
-                      </v-card-text>
-                    </v-col>
-                    <v-col cols="12" md="8">
-                      <v-card-text
-                        class="mt-12"
-                        v-on:keyup.enter="handleSubmit"
-                      >
-                        <h1 class="text-center display-2">
                           CRIAR CONTA
                         </h1>
-                        <!-- <div class="text-center mt-4"></div> -->
                         <v-form
                           ref="signup"
                           v-model="validRegistration"
@@ -166,6 +135,27 @@
                         <div class="text-center mt-3">
                           <v-btn block dark @click.prevent="handleSubmit"
                             >CADASTRAR</v-btn
+                          >
+                        </div>
+                        <div class="text-center mt-3">
+                          Já é cadastrado?
+                          <v-btn
+                            text
+                            color="primary"
+                            small
+                            @click="
+                              () => {
+                                step--;
+                                formRegistration = {
+                                  fullName: '',
+                                  email: '',
+                                  enrollment: '',
+                                  password: '',
+                                };
+                                this.$refs.signup.reset();
+                              }
+                            "
+                            >FAZER LOGIN</v-btn
                           >
                         </div>
                       </v-card-text>
@@ -244,4 +234,19 @@ export default {
   },
 };
 </script>
-<style scoped></style>
+<style scoped>
+#login {
+  width: 100%;
+  background: var(--primary-light-color);
+  /*background: linear-gradient(
+    90deg,
+    rgba(116, 150, 212, 1) 0%,
+    rgba(255, 135, 71, 1) 100%
+  ); */
+  /* background: linear-gradient(
+    0deg,
+    rgba(255, 135, 71, 1) 0%,
+    rgba(116, 150, 212, 1) 100%
+  ); */
+}
+</style>

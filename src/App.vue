@@ -13,3 +13,4 @@ export default {
   }),
 };
 </script>
+<style src="./assets/root.css"></style>

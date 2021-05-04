@@ -11,16 +11,22 @@
         }
       "
     >
-      <v-btn slot="activator" slot-scope="props" v-on="props.on">
-        + Adicionar
+      <v-btn
+        slot="activator"
+        slot-scope="props"
+        v-on="props.on"
+        color="var(--primary-color)"
+        style="color: white"
+      >
+        <v-icon left> mdi-plus </v-icon> Adicionar
       </v-btn>
       <v-card>
         <v-toolbar dark
-          ><h2>
+          ><h5>
             {{
               update == true ? "Editar disciplina" : "Adicionar nova disciplina"
             }}
-          </h2></v-toolbar
+          </h5></v-toolbar
         >
         <v-card-text class="pt-6">
           <v-form v-model="validForm" ref="addDisciplina">

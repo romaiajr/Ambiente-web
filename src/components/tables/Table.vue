@@ -16,7 +16,8 @@
           small
           color="warning"
           tile
-          >Editar</v-btn
+        >
+          <v-icon left> mdi-pencil </v-icon>Editar</v-btn
         >
         <v-btn
           @click="
@@ -30,12 +31,12 @@
           color="error"
           tile
           class="ml-2"
-          >Remover</v-btn
+          ><v-icon left> mdi-delete </v-icon>Remover</v-btn
         >
       </template>
       <template v-slot:item.actionTurma="{ item }">
         <v-btn @click="handleTutor(item)" elevation="2" small color="info" tile
-          >Tutor</v-btn
+          ><v-icon left> mdi-account-supervisor </v-icon>Tutores</v-btn
         >
         <v-btn
           @click="
@@ -49,7 +50,7 @@
           color="error"
           tile
           class="ml-2"
-          >Remover</v-btn
+          ><v-icon left> mdi-delete </v-icon>Remover</v-btn
         >
       </template>
     </v-data-table>

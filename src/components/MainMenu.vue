@@ -8,13 +8,16 @@
         >
           <div class="wrimagecard-topimage_header">
             <center>
-              <v-icon class="menu-icon" x-large color="orange darken-2">{{
-                item.icon
-              }}</v-icon>
+              <v-icon
+                class="menu-icon"
+                x-large
+                color="var(--secondary-color)"
+                >{{ item.icon }}</v-icon
+              >
             </center>
           </div>
           <div class="wrimagecard-topimage_title">
-            <h2>{{ item.title }}</h2>
+            <h6>{{ item.title }}</h6>
             <!-- <h4>{{ item.title }}</h4> -->
           </div>
         </div></v-col

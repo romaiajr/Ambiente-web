@@ -1,8 +1,8 @@
 <template>
-  <v-snackbar v-model="show" :color="type" right bottom>
-    <h3 style="margin: 0px !important">
+  <v-snackbar v-model="show" color="success" right bottom>
+    <h6 style="margin: 0px !important">
       {{ text }}
-    </h3>
+    </h6>
     <template v-slot:action="{ attrs }">
       <v-btn color="white" text v-bind="attrs" @click="hide">
         Fechar

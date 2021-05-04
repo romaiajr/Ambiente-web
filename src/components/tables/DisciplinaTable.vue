@@ -4,7 +4,7 @@
       <v-col offset-md="2" md="8" sm="12">
         <v-card>
           <v-card-title>
-            <h2>Disciplinas</h2>
+            <h4>Disciplinas</h4>
           </v-card-title>
           <v-card-subtitle>
             <v-spacer></v-spacer>
@@ -19,6 +19,7 @@
                   dense
                 ></v-text-field>
               </v-col>
+
               <v-col class="d-flex justify-end" cols="12" sm="4">
                 <AddDisciplina
                   @handleSubmit="handleSubmit"

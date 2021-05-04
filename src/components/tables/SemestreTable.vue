@@ -4,7 +4,7 @@
       <v-col offset-md="2" md="8" sm="12">
         <v-card>
           <v-card-title>
-            <h2>Semestres</h2>
+            <h4>Semestres</h4>
           </v-card-title>
           <v-card-subtitle>
             <v-spacer></v-spacer>

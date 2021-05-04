@@ -5,34 +5,51 @@
       <v-list-item>
         <v-list-item-content>
           <v-list-item-title class="title">
-            Application
+            <v-avatar color="grey" size="56">
+              <v-icon x-large color="white">mdi-account</v-icon>
+            </v-avatar>
           </v-list-item-title>
           <v-list-item-subtitle>
-            subtext
+            <h6>Nome de Usuário</h6>
+            <small>Tipo de usuário</small>
           </v-list-item-subtitle>
         </v-list-item-content>
       </v-list-item>
       <v-divider></v-divider>
       <!-- Function List -->
       <v-list nav>
-        <v-list-item-group v-model="group" active-class="text--accent-4">
+        <v-list-item-group
+          v-model="group"
+          active-class="text--accent-4"
+          color="var(--primary-color)"
+        >
           <v-list-item
+            shapped
             v-for="(item, idx) in navItems"
             :key="idx"
             @click="handleClick(item.value)"
           >
             <v-icon>{{ item.icon }}</v-icon>
-            <v-list-item-title style="margin-left: 8px">{{
-              item.title
-            }}</v-list-item-title>
+            <v-list-item-title style="margin-left: 8px">
+              <p>{{ item.title }}</p>
+            </v-list-item-title>
           </v-list-item>
         </v-list-item-group>
       </v-list>
+      <v-list-item shapped justify-end @click="logout">
+        <v-icon>mdi-logout</v-icon>
+        <v-list-item-title style="margin-left: 8px">
+          Sair
+        </v-list-item-title>
+      </v-list-item>
     </v-navigation-drawer>
 
-    <v-app-bar dark>
-      <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
-      <v-toolbar-title>Ambiente Web</v-toolbar-title>
+    <v-app-bar color="var(--primary-dark-color)" style="color: white">
+      <v-app-bar-nav-icon
+        color="white"
+        @click.stop="drawer = !drawer"
+      ></v-app-bar-nav-icon>
+      <v-toolbar-title><h5>Ambiente Web</h5></v-toolbar-title>
       <v-spacer></v-spacer>
     </v-app-bar>
   </div>
@@ -43,7 +60,7 @@ export default {
   props: ["current"],
   data: () => ({
     drawer: false,
-    group: null,
+    group: 0,
     deviceWidth: undefined,
   }),
   computed: {
@@ -57,6 +74,10 @@ export default {
       if (this.deviceWidth <= 1264) {
         this.drawer = !this.drawer;
       }
+    },
+    logout() {
+      sessionStorage.removeItem("token");
+      window.location.replace("http://localhost:8080/");
     },
   },
   watch: {

@@ -10,11 +10,11 @@
       "
     >
       <v-card>
-        <v-toolbar dark><h2>Gerenciar Tutores</h2></v-toolbar>
+        <v-toolbar dark><h5>Gerenciar Tutores</h5></v-toolbar>
         <v-card-text class="pt-6">
           <v-form ref="addTutor">
             <div v-if="alocados.length >= 1">
-              <h4>Tutores previamente designados para a disciplina</h4>
+              <p>Tutores previamente designados para a disciplina</p>
               <v-chip
                 v-for="item in alocados"
                 :key="item.value"
