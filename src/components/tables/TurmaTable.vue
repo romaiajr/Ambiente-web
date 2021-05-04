@@ -9,7 +9,7 @@
           <v-card-subtitle>
             <v-spacer></v-spacer>
             <v-row no-gutter align="center">
-              <v-col class="d-flex" cols="12" sm="8">
+              <v-col class="d-flex" cols="12" sm="5">
                 <v-text-field
                   align="center"
                   v-model="searchQuery"
@@ -18,6 +18,17 @@
                   hide-details
                   dense
                 ></v-text-field>
+              </v-col>
+              <v-col cols="12" sm="3">
+                <v-select
+                  dense
+                  style="margin-top: 22px !important; "
+                  :items="semestres"
+                  label="Filtrar"
+                  v-model="filterQuery"
+                  append-icon="mdi-filter"
+                  clearable
+                ></v-select>
               </v-col>
               <v-col class="d-flex justify-end" cols="12" sm="4">
                 <AddTurma @handleSubmit="handleSubmit" />
@@ -43,6 +54,7 @@
 import Table from "./Table";
 import headers from "../../utils/headers.json";
 import turmaService from "../../services/turmaService";
+import semestreService from "../../services/semestreService";
 import AddTurma from "../forms/AddTurma";
 import AddTutor from "../forms/AddTutor";
 export default {
@@ -54,7 +66,9 @@ export default {
   data() {
     return {
       data: undefined,
+      semestres: [],
       searchQuery: "",
+      filterQuery: null,
       headers: "",
       waiting: false,
       turma: undefined,
@@ -66,8 +80,16 @@ export default {
   computed: {
     filteredList() {
       let search = this.removeSpecial(this.searchQuery.toLowerCase().trim());
+      var itens = [];
+      if (this.filterQuery == null) {
+        itens = this.data;
+      } else {
+        itens = this.data.filter((item) => {
+          return item.semestre_code == this.filterQuery;
+        });
+      }
       if (search != "") {
-        return this.data.filter((item) => {
+        return itens.filter((item) => {
           return (
             this.removeSpecial(item.code.toLowerCase()).includes(search) ||
             this.removeSpecial(item.disciplina_name.toLowerCase()).includes(
@@ -76,7 +98,7 @@ export default {
           );
         });
       } else {
-        return this.data;
+        return itens;
       }
     },
     notFound() {
@@ -98,6 +120,18 @@ export default {
         items.map((item) => {
           item.code = `${item.disciplina_code}-${item.code}`;
           this.data.push(item);
+        });
+      });
+      semestreService.get().then((response) => {
+        let items = response.data.sort((a, b) => {
+          return b.code.localeCompare(a.code);
+        });
+        this.filterQuery = items[0].code;
+        items.map((item) => {
+          this.semestres.push({
+            text: item.code,
+            value: item.code,
+          });
         });
       });
     },

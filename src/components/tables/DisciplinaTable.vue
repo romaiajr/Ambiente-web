@@ -9,7 +9,7 @@
           <v-card-subtitle>
             <v-spacer></v-spacer>
             <v-row no-gutter align="center">
-              <v-col class="d-flex" cols="12" sm="6">
+              <v-col class="d-flex" cols="12" sm="5">
                 <v-text-field
                   align="center"
                   v-model="searchQuery"
@@ -19,7 +19,7 @@
                   dense
                 ></v-text-field>
               </v-col>
-              <v-col cols="12" sm="2">
+              <v-col cols="12" sm="3">
                 <v-select
                   dense
                   style="margin-top: 22px !important; "

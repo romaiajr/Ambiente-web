@@ -89,7 +89,7 @@ export default {
       this.headers = headers.semestres;
       semestreService.get().then((response) => {
         let items = response.data.sort((a, b) => {
-          return a.code.localeCompare(b.code);
+          return b.code.localeCompare(a.code);
         });
         this.data = [];
         items.map((item) => {
@@ -121,7 +121,6 @@ export default {
     // NEW
     async handleDelete(selectedItem) {
       try {
-        console.log(selectedItem);
         this.waiting = true;
         await semestreService.destroy(selectedItem.id);
         this.data = this.data.filter((item) => {
