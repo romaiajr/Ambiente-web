@@ -9,7 +9,7 @@
           <v-card-subtitle>
             <v-spacer></v-spacer>
             <v-row no-gutter align="center">
-              <v-col class="d-flex" cols="12" sm="8">
+              <v-col class="d-flex" cols="12" sm="6">
                 <v-text-field
                   align="center"
                   v-model="searchQuery"
@@ -19,7 +19,17 @@
                   dense
                 ></v-text-field>
               </v-col>
-
+              <v-col cols="12" sm="2">
+                <v-select
+                  dense
+                  style="margin-top: 22px !important; "
+                  :items="departamentos"
+                  label="Filtrar"
+                  v-model="filterQuery"
+                  append-icon="mdi-filter"
+                  clearable
+                ></v-select>
+              </v-col>
               <v-col class="d-flex justify-end" cols="12" sm="4">
                 <AddDisciplina
                   @handleSubmit="handleSubmit"
@@ -49,6 +59,7 @@ import Table from "./Table";
 import headers from "../../utils/headers.json";
 import disciplinaService from "../../services/disciplinaService";
 import AddDisciplina from "../forms/AddDisciplina";
+import departamentoService from "../../services/departamentoService";
 export default {
   components: {
     AddDisciplina,
@@ -58,9 +69,11 @@ export default {
     return {
       data: undefined,
       searchQuery: "",
+      filterQuery: null,
       headers: "",
       waiting: false,
       dataToUpdate: null,
+      departamentos: [],
     };
   },
   created() {
@@ -69,15 +82,24 @@ export default {
   computed: {
     filteredList() {
       let search = this.removeSpecial(this.searchQuery.toLowerCase().trim());
+      var itens = [];
+      if (this.filterQuery == null) {
+        itens = this.data;
+      } else {
+        itens = this.data.filter((item) => {
+          console.log(item.data);
+          return item.departamento_id == this.filterQuery;
+        });
+      }
       if (search != "") {
-        return this.data.filter((item) => {
+        return itens.filter((item) => {
           return (
             this.removeSpecial(item.code.toLowerCase()).includes(search) ||
             this.removeSpecial(item.name.toLowerCase()).includes(search)
           );
         });
       } else {
-        return this.data;
+        return itens;
       }
     },
     notFound() {
@@ -94,6 +116,14 @@ export default {
       disciplinaService.get().then((response) => {
         this.data = response.data.sort((a, b) => {
           return a.code.localeCompare(b.code);
+        });
+      });
+      departamentoService.get().then((response) => {
+        response.data.map((item) => {
+          this.departamentos.push({
+            text: item.abbreviation,
+            value: item.id,
+          });
         });
       });
     },

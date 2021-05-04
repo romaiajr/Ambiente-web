@@ -237,16 +237,16 @@ export default {
 <style scoped>
 #login {
   width: 100%;
-  background: var(--primary-light-color);
+  /* background: var(--primary-light-color); */
   /*background: linear-gradient(
     90deg,
     rgba(116, 150, 212, 1) 0%,
     rgba(255, 135, 71, 1) 100%
   ); */
-  /* background: linear-gradient(
+  background: linear-gradient(
     0deg,
     rgba(255, 135, 71, 1) 0%,
     rgba(116, 150, 212, 1) 100%
-  ); */
+  );
 }
 </style>

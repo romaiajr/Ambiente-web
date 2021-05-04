@@ -6,7 +6,7 @@
       :headers="headers"
       :items="filteredList"
       :items-per-page="10"
-      class="elevation-1 row-pointer"
+      class="elevation-1 row-pointer table"
       :no-data-text="notFound"
     >
       <template v-slot:item.action="{ item }">
@@ -62,9 +62,7 @@
       @keydown.enter="handleDelete"
     >
       <v-card>
-        <v-toolbar dark
-          ><h3>Deseja realmente remover o item selecionado?</h3></v-toolbar
-        >
+        <v-toolbar dark><h6>Deseja remover o item selecionado?</h6></v-toolbar>
         <v-progress-linear
           v-if="waiting == true"
           indeterminate

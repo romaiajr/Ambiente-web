@@ -19,6 +19,7 @@
                   dense
                 ></v-text-field>
               </v-col>
+
               <v-col class="d-flex justify-end" cols="12" sm="4">
                 <!-- New -->
                 <AddDepartamento
