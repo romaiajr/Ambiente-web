@@ -2,9 +2,9 @@
   <div>
     <v-data-table
       :loading="loading"
-      loading-text="Carregando... Por favor, aguarde"
-      :headers="headers"
       :items="filteredList"
+      :headers="headers"
+      loading-text="Carregando... Por favor, aguarde"
       :items-per-page="10"
       class="elevation-1 row-pointer table"
       :no-data-text="notFound"
@@ -108,6 +108,19 @@ export default {
     handleTutor(item) {
       this.$emit("handleTutor", item);
     },
+    getRows(rows) {
+      const result = {};
+      const _ = require("lodash");
+      _.forEach(rows, (i, key) => {
+        if (i.children) {
+          _.forEach(i.children, (i1, key1) => {
+            result["c" + key1] = i1;
+          });
+        } else result[key] = i;
+      });
+      console.log(result);
+      return result;
+    },
   },
   watch: {
     waiting(newValue) {
@@ -116,3 +129,9 @@ export default {
   },
 };
 </script>
+<style>
+td {
+  word-break: break-word !important;
+  overflow-wrap: break-word !important;
+}
+</style>

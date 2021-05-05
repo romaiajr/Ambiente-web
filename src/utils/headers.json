@@ -1,11 +1,11 @@
 {
   "departamento": [
-    { "text": "Sigla", "value": "abbreviation" },
-    { "text": "Nome", "value": "name" },
+    { "text": "Sigla", "value": "abbreviation", "width": "12%" },
+    { "text": "Nome", "value": "name", "width": "55%" },
     { "text": "Actions", "value": "action", "sortable": false }
   ],
   "disciplinas": [
-    { "text": "Código", "value": "code" },
+    { "text": "Código", "value": "code", "width": "12%" },
     { "text": "Disciplina", "value": "name" },
     { "text": "Actions", "value": "action", "sortable": false }
   ],
@@ -13,12 +13,17 @@
     { "text": "Código", "value": "code" },
     { "text": "Data de Início", "value": "start_date" },
     { "text": "Data de Termino", "value": "end_date" },
-    { "text": "Actions", "value": "action", "sortable": false }
+    { "text": "Actions", "value": "action", "sortable": false, "width": "33%" }
   ],
   "turmas": [
-    { "text": "Código", "value": "code" },
+    { "text": "Código", "value": "code", "width": "15%" },
     { "text": "Disciplina", "value": "disciplina_name" },
-    { "text": "Semestre", "value": "semestre_code" },
-    { "text": "Actions", "value": "actionTurma", "sortable": false }
+    { "text": "Semestre", "value": "semestre_code", "width": "14%" },
+    {
+      "text": "Actions",
+      "value": "actionTurma",
+      "sortable": false,
+      "width": "34%"
+    }
   ]
 }

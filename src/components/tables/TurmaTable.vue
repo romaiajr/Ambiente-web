@@ -113,13 +113,18 @@ export default {
     componentStructure() {
       this.headers = headers.turmas;
       turmaService.get().then((response) => {
-        let items = response.data.sort((a, b) => {
-          return a.disciplina_name.localeCompare(b.disciplina_name);
-        });
+        let items = response.data;
         this.data = [];
         items.map((item) => {
           item.code = `${item.disciplina_code}-${item.code}`;
           this.data.push(item);
+        });
+        this.data = this.data.sort((a, b) => {
+          if (a.disciplina_ofertada_id == b.disciplina_ofertada_id) {
+            return a.code.localeCompare(b.code);
+          } else {
+            return a.disciplina_code.localeCompare(b.disciplina_code);
+          }
         });
       });
       semestreService.get().then((response) => {
@@ -169,3 +174,4 @@ export default {
   },
 };
 </script>
+<style></style>
