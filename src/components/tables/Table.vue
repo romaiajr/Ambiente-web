@@ -62,7 +62,9 @@
       @keydown.enter="handleDelete"
     >
       <v-card>
-        <v-toolbar dark><h6>Deseja remover o item selecionado?</h6></v-toolbar>
+        <v-toolbar color="var(--primary-dark-color)" style="color: white"
+          ><h6>Deseja remover o item selecionado?</h6></v-toolbar
+        >
         <v-progress-linear
           v-if="waiting == true"
           indeterminate

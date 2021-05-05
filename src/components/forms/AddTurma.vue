@@ -20,7 +20,9 @@
         <v-icon left> mdi-plus </v-icon> Adicionar
       </v-btn>
       <v-card>
-        <v-toolbar dark><h5>Adicionar Nova Turma</h5></v-toolbar>
+        <v-toolbar color="var(--primary-dark-color)" style="color: white"
+          ><h5>Adicionar Nova Turma</h5></v-toolbar
+        >
         <v-card-text class="pt-6">
           <v-form v-model="validForm" ref="addTurma">
             <v-select

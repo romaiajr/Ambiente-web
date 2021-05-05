@@ -21,7 +21,7 @@
         <v-icon left> mdi-plus </v-icon> Adicionar
       </v-btn>
       <v-card>
-        <v-toolbar dark
+        <v-toolbar color="var(--primary-dark-color)" style="color: white"
           ><h5>
             {{
               update == true ? "Editar disciplina" : "Adicionar nova disciplina"

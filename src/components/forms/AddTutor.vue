@@ -10,7 +10,9 @@
       "
     >
       <v-card>
-        <v-toolbar dark><h5>Gerenciar Tutores</h5></v-toolbar>
+        <v-toolbar color="var(--primary-dark-color)" style="color: white"
+          ><h5>Gerenciar Tutores</h5></v-toolbar
+        >
         <v-card-text class="pt-6">
           <v-form ref="addTutor">
             <div v-if="alocados.length >= 1">
