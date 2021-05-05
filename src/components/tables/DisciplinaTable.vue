@@ -53,6 +53,12 @@
         </v-card>
       </v-col>
     </v-row>
+    <Snackbar
+      type="success"
+      text="Disciplina removida com sucesso!"
+      :show="removed"
+      @hide="removed = false"
+    />
   </v-container>
 </template>
 <script>
@@ -61,10 +67,12 @@ import headers from "../../utils/headers.json";
 import disciplinaService from "../../services/disciplinaService";
 import AddDisciplina from "../forms/AddDisciplina";
 import departamentoService from "../../services/departamentoService";
+import Snackbar from "../Snackbar";
 export default {
   components: {
     AddDisciplina,
     Table,
+    Snackbar,
   },
   data() {
     return {
@@ -75,6 +83,7 @@ export default {
       waiting: false,
       dataToUpdate: null,
       departamentos: [],
+      removed: false,
     };
   },
   created() {
@@ -157,6 +166,7 @@ export default {
           return item.id != selectedItem.id;
         });
         this.waiting = false;
+        this.removed = true;
       } catch (error) {
         console.log(error);
       }

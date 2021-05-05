@@ -99,7 +99,7 @@ export default {
   components: {
     Snackbar,
   },
-  props: ["dataToUpdate, waiting"],
+  props: ["dataToUpdate", "waiting"],
   data() {
     return {
       form: { abbreviation: "", name: "" },

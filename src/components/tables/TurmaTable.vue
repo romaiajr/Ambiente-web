@@ -48,6 +48,12 @@
         </v-card>
       </v-col>
     </v-row>
+    <Snackbar
+      type="success"
+      text="Turma removida com sucesso!"
+      :show="removed"
+      @hide="removed = false"
+    />
   </v-container>
 </template>
 <script>
@@ -57,11 +63,13 @@ import turmaService from "../../services/turmaService";
 import semestreService from "../../services/semestreService";
 import AddTurma from "../forms/AddTurma";
 import AddTutor from "../forms/AddTutor";
+import Snackbar from "../Snackbar";
 export default {
   components: {
     AddTurma,
     AddTutor,
     Table,
+    Snackbar,
   },
   data() {
     return {
@@ -72,6 +80,7 @@ export default {
       headers: "",
       waiting: false,
       turma: undefined,
+      removed: false,
     };
   },
   created() {
@@ -157,6 +166,7 @@ export default {
           return item.id != selectedItem.id;
         });
         this.waiting = false;
+        this.removed = true;
       } catch (error) {
         console.log(error);
       }

@@ -41,6 +41,12 @@
         </v-card>
       </v-col>
     </v-row>
+    <Snackbar
+      type="success"
+      text="Semestre removido com sucesso!"
+      :show="removed"
+      @hide="removed = false"
+    />
   </v-container>
 </template>
 <script>
@@ -48,10 +54,12 @@ import Table from "./Table";
 import headers from "../../utils/headers.json";
 import semestreService from "../../services/semestreService";
 import AddSemestre from "../forms/AddSemestre";
+import Snackbar from "../Snackbar";
 export default {
   components: {
     AddSemestre,
     Table,
+    Snackbar,
   },
   data() {
     return {
@@ -60,6 +68,7 @@ export default {
       headers: "",
       dataToUpdate: null,
       waiting: false,
+      removed: false,
     };
   },
   created() {
@@ -131,6 +140,7 @@ export default {
           return item.id != selectedItem.id;
         });
         this.waiting = false;
+        this.removed = true;
       } catch (error) {
         console.log(error);
       }

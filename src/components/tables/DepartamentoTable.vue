@@ -45,6 +45,12 @@
         </v-card>
       </v-col>
     </v-row>
+    <Snackbar
+      type="success"
+      text="Departamento removido com sucesso!"
+      :show="removed"
+      @hide="removed = false"
+    />
   </v-container>
 </template>
 <script>
@@ -52,10 +58,12 @@ import Table from "./Table";
 import headers from "../../utils/headers.json";
 import departamentoService from "../../services/departamentoService";
 import AddDepartamento from "../forms/AddDepartamento";
+import Snackbar from "../Snackbar";
 export default {
   components: {
     AddDepartamento,
     Table,
+    Snackbar,
   },
   data() {
     return {
@@ -64,6 +72,7 @@ export default {
       headers: "",
       waiting: false,
       dataToUpdate: null,
+      removed: false,
     };
   },
   created() {
@@ -136,6 +145,7 @@ export default {
           return item.id != selectedItem.id;
         });
         this.waiting = false;
+        this.removed = true;
       } catch (error) {
         console.log(error);
       }
