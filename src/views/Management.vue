@@ -7,6 +7,7 @@
       <DisciplinaTable v-else-if="current == 2" />
       <SemestreTable v-else-if="current == 3" />
       <TurmaTable v-else-if="current == 4" />
+      <LogTable v-else-if="current == 5" />
     </v-main>
   </v-app>
 </template>
@@ -17,6 +18,7 @@ import DisciplinaTable from "../components/tables/DisciplinaTable";
 import SemestreTable from "../components/tables/SemestreTable";
 import TurmaTable from "../components/tables/TurmaTable";
 import MainMenu from "../components/MainMenu";
+import LogTable from "../components/tables/LogTable";
 export default {
   components: {
     Navbar,
@@ -25,6 +27,7 @@ export default {
     DisciplinaTable,
     SemestreTable,
     TurmaTable,
+    LogTable,
   },
   data: () => ({
     current: 0,

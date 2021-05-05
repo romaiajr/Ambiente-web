@@ -231,6 +231,7 @@ export default {
       } catch (error) {
         if (this.step == 1) {
           console.log(error);
+          this.waiting = false;
           if (this.validLogin) this.loginError = true;
         } else if (this.step == 2) {
           console.log(error);

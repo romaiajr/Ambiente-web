@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <v-row id="teachers-table" class="mt-2">
+    <v-row id="semestre-table" class="mt-2">
       <v-col offset-md="2" md="8" sm="12">
         <v-card>
           <v-card-title>

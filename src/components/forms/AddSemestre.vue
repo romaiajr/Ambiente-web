@@ -247,7 +247,11 @@ export default {
         var min = this.form.start_date;
         min = min.split("-");
         min[2] = parseInt(min[2]) + 1;
+        if (min[2] < 10) {
+          min[2] = `0${min[2]}`;
+        }
         min = min[0] + "-" + min[1] + "-" + min[2];
+        console.log(min);
         return min;
       } else {
         return this.currentDate;
