@@ -45,8 +45,8 @@ export default {
       data: undefined,
       searchQuery: "",
       headers: [
-        { text: "Log do Sistema", value: "log" },
-        { text: "Data", value: "created_at" },
+        { text: "Log", value: "log" },
+        { text: "Data e Hora", value: "created_at", width: "30%" },
       ],
     };
   },
@@ -75,11 +75,31 @@ export default {
     componentStructure() {
       try {
         logService.get().then((response) => {
-          this.data = response.data.reverse();
+          let items = response.data.reverse();
+          this.data = [];
+          items.map((item) => {
+            this.data.push({
+              log: item.log,
+              created_at: this.formatDate(item.created_at),
+            });
+          });
         });
       } catch (error) {
         console.log(error);
       }
+    },
+    formatDate(date) {
+      var dateTime = date.split("T");
+      var data = dateTime[0].split("-");
+      data = `${data[2]}-${data[1]}-${data[0]}`;
+      var time = dateTime[1].split(".");
+      time = time[0].split(":");
+      time[0] = parseInt(time[0]) - 3;
+      if (time[0] < 10) {
+        time[0] = `0${time[0]}`;
+      }
+      time = `${time[0]}:${time[1]}:${time[2]}`;
+      return `${data} T${time}`;
     },
     removeSpecial(texto) {
       texto = texto.replace(/[ÀÁÂÃÄÅ]/, "A");
