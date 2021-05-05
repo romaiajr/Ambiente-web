@@ -5,6 +5,10 @@
         <v-row align="center" justify="center">
           <v-col cols="12" md="5" sm="8">
             <v-card class="elevation-12">
+              <v-progress-linear
+                v-if="waiting == true"
+                indeterminate
+              ></v-progress-linear>
               <v-window v-model="step">
                 <v-window-item :value="1">
                   <v-row>
@@ -192,6 +196,7 @@ export default {
       try {
         // Login Form
         if (this.step == 1) {
+          this.waiting = true;
           this.usernameRules = [(v) => !!v || "Insira um nome de usuário"];
           this.passwordRules = [(v) => !!v || "Insira uma senha"];
           if (this.$refs.signin.validate()) {
@@ -199,6 +204,7 @@ export default {
             sessionStorage.setItem("token", token.data.token);
             window.location.replace("http://localhost:8080/user");
           }
+          this.waiting = false;
         }
         // Registration Form
         else if (this.step == 2) {

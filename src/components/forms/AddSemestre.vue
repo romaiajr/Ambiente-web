@@ -3,6 +3,8 @@
     <v-dialog
       v-model="dialog"
       max-width="500"
+      :disabled="waiting"
+      :persistent="waiting"
       @click:outside="
         () => {
           form = {};
@@ -22,7 +24,11 @@
       </v-btn>
       <v-card>
         <v-toolbar color="var(--primary-dark-color)" style="color: white"
-          ><h5>
+          ><v-progress-linear
+            v-if="waiting == true"
+            indeterminate
+          ></v-progress-linear>
+          <h5>
             {{ update == true ? "Editar semestre" : "Adicionar novo semestre" }}
           </h5></v-toolbar
         >
@@ -154,7 +160,7 @@ export default {
   components: {
     Snackbar,
   },
-  props: ["dataToUpdate"],
+  props: ["dataToUpdate", "waiting"],
   data() {
     return {
       form: { code: "", start_date: "", end_date: "" },

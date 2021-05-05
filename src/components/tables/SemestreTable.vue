@@ -100,23 +100,27 @@ export default {
       });
     },
     handleSubmit(data) {
+      this.waiting = true;
       data.start_date = this.formatDate(data.start_date);
       data.end_date = this.formatDate(data.end_date);
       this.data.push(data);
       this.data = this.data.sort((a, b) => {
         return a.code.localeCompare(b.code);
       });
+      this.waiting = false;
     },
     handleUpdate(item) {
       this.dataToUpdate = item.id;
     },
     // NEW
     updateData(updatedData) {
+      this.waiting = true;
       var index = this.data.findIndex((item) => {
         return item.id == updatedData.id;
       });
       this.data[index].end_date = this.formatDate(updatedData.end_date);
       this.dataToUpdate = null;
+      this.waiting = false;
     },
     // NEW
     async handleDelete(selectedItem) {

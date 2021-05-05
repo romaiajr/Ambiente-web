@@ -3,6 +3,8 @@
     <v-dialog
       v-model="dialog"
       max-width="500"
+      :disabled="waiting"
+      :persistent="waiting"
       @click:outside="
         () => {
           this.cancelTutor();
@@ -11,7 +13,11 @@
     >
       <v-card>
         <v-toolbar color="var(--primary-dark-color)" style="color: white"
-          ><h5>Gerenciar Tutores</h5></v-toolbar
+          ><v-progress-linear
+            v-if="waiting == true"
+            indeterminate
+          ></v-progress-linear>
+          <h5>Gerenciar Tutores</h5></v-toolbar
         >
         <v-card-text class="pt-6">
           <v-form ref="addTutor">
@@ -97,6 +103,7 @@ export default {
       tutores: [],
       turma_tutor: [],
       snackText: undefined,
+      waiting: false,
     };
   },
   watch: {
@@ -109,6 +116,7 @@ export default {
   methods: {
     async handleSubmit() {
       try {
+        this.waiting = true;
         for (const item of this.selectedTutores) {
           var turma_tutor = { user_id: item.value, turma_id: this.turma.id };
           await turmaService.addTutor(turma_tutor);
@@ -117,6 +125,7 @@ export default {
         this.successText(this.selectedTutores.length);
         this.stored = true;
         this.cancelTutor();
+        this.waiting = false;
       } catch (error) {
         console.log(error);
       }

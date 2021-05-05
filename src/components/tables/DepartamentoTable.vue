@@ -27,6 +27,7 @@
                   :dataToUpdate="dataToUpdate"
                   @handleUpdate="updateData"
                   @cancelUpdate="dataToUpdate = null"
+                  :waiting="waiting"
                 />
               </v-col>
             </v-row>
@@ -105,10 +106,12 @@ export default {
       }
     },
     handleSubmit(data) {
+      this.waiting = true;
       this.data.push(data);
       this.data = this.data.sort((a, b) => {
         return a.abbreviation.localeCompare(b.abbreviation);
       });
+      this.waiting = false;
     },
     // NEW
     handleUpdate(item) {
@@ -116,11 +119,13 @@ export default {
     },
     // NEW
     updateData(updatedData) {
+      this.waiting = true;
       var index = this.data.findIndex((item) => {
         return item.id == updatedData.id;
       });
       this.data[index].name = updatedData.name;
       this.dataToUpdate = null;
+      this.waiting = false;
     },
     // NEW
     async handleDelete(selectedItem) {

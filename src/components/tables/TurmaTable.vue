@@ -31,7 +31,7 @@
                 ></v-select>
               </v-col>
               <v-col class="d-flex justify-end" cols="12" sm="4">
-                <AddTurma @handleSubmit="handleSubmit" />
+                <AddTurma @handleSubmit="handleSubmit" :waiting="waiting" />
                 <AddTutor :turma="turma" @cancelTutor="turma = null" />
               </v-col>
             </v-row>
@@ -141,11 +141,13 @@ export default {
       });
     },
     handleSubmit(data) {
+      this.waiting = true;
       data.code = `${data.disciplina_code}-${data.code}`;
       this.data.push(data);
       this.data = this.data.sort((a, b) => {
         return a.code.localeCompare(b.code);
       });
+      this.waiting = false;
     },
     async handleDelete(selectedItem) {
       try {

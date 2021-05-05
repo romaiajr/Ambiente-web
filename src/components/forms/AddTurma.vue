@@ -3,6 +3,8 @@
     <v-dialog
       v-model="dialog"
       max-width="500"
+      :disabled="waiting"
+      :persistent="waiting"
       @click:outside="
         () => {
           form = {};
@@ -21,7 +23,11 @@
       </v-btn>
       <v-card>
         <v-toolbar color="var(--primary-dark-color)" style="color: white"
-          ><h5>Adicionar Nova Turma</h5></v-toolbar
+          ><v-progress-linear
+            v-if="waiting == true"
+            indeterminate
+          ></v-progress-linear>
+          <h5>Adicionar Nova Turma</h5></v-toolbar
         >
         <v-card-text class="pt-6">
           <v-form v-model="validForm" ref="addTurma">
@@ -87,6 +93,7 @@ export default {
   components: {
     Snackbar,
   },
+  props: ["waiting"],
   data() {
     return {
       form: { disciplina_id: "", semestre_id: "", number_of_classes: "" },
