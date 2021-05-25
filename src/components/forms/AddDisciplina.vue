@@ -10,6 +10,7 @@
           form = {};
           this.$refs.addDisciplina.reset();
           if (update == true) this.cancelUpdate();
+          errorMessages.code = null;
         }
       "
     >
@@ -44,6 +45,8 @@
               label="Código da disciplina"
               required
               :disabled="update"
+              :error="errorMessages.code != null"
+              :error-messages="errorMessages.code"
             ></v-text-field>
             <v-text-field
               v-model="form.name"
@@ -80,6 +83,7 @@
                 dialog = false;
                 this.$refs.addDisciplina.reset();
                 if (update == true) this.cancelUpdate();
+                errorMessages.code = null;
               }
             "
             >Cancelar</v-btn
@@ -147,6 +151,7 @@ export default {
       stored: false,
       update: false,
       updated: false,
+      errorMessages: { code: null },
     };
   },
   created() {
@@ -164,9 +169,12 @@ export default {
           this.stored = true;
           this.form = {};
           this.$refs.addDisciplina.reset();
+          this.errorMessages.code = null;
         }
       } catch (error) {
-        console.log(error);
+        error.response.data.message.forEach((item) => {
+          this.handleError(item);
+        });
       }
     },
     //new
@@ -182,7 +190,9 @@ export default {
           this.$refs.addDisciplina.reset();
         }
       } catch (error) {
-        console.log(error);
+        error.response.data.message.forEach((item) => {
+          this.handleError(item);
+        });
       }
     },
     getDepartamentos() {
@@ -194,6 +204,14 @@ export default {
           });
         });
       });
+    },
+    handleError(error) {
+      switch (error.field) {
+        case "code": {
+          this.errorMessages.code = error.message;
+          break;
+        }
+      }
     },
     getOne() {
       disciplinaService.getOne(this.dataToUpdate).then((response) => {

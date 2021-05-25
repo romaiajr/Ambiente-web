@@ -10,6 +10,7 @@
           form = {};
           this.$refs.addSemestre.reset();
           if (this.update == true) this.cancelUpdate();
+          errorMessages.code = null;
         }
       "
     >
@@ -42,6 +43,8 @@
               label="Código do semestre"
               required
               :disabled="update"
+              :error="errorMessages.code != null"
+              :error-messages="errorMessages.code"
             ></v-text-field>
             <v-menu
               v-model="menu"
@@ -125,6 +128,7 @@
                 dialog = false;
                 this.$refs.addSemestre.reset();
                 if (update == true) this.cancelUpdate();
+                errorMessages.code = null;
               }
             "
             >Cancelar</v-btn
@@ -178,6 +182,7 @@ export default {
       updated: false,
       menu: false,
       menu2: false,
+      errorMessages: { code: null },
     };
   },
   methods: {
@@ -193,9 +198,12 @@ export default {
           this.stored = true;
           this.form = {};
           this.$refs.addSemestre.reset();
+          this.errorMessages.code = null;
         }
       } catch (error) {
-        console.log(error);
+        error.response.data.message.forEach((item) => {
+          this.handleError(item);
+        });
       }
     },
     async handleUpdate() {
@@ -211,6 +219,14 @@ export default {
         }
       } catch (error) {
         console.log(error);
+      }
+    },
+    handleError(error) {
+      switch (error.field) {
+        case "code": {
+          this.errorMessages.code = error.message;
+          break;
+        }
       }
     },
     //new

@@ -8,6 +8,7 @@
       @click:outside="
         () => {
           form = {};
+          errorMessages.abbreviation = null;
           this.$refs.addDepartamento.reset();
           if (this.update == true) this.cancelUpdate();
         }
@@ -46,6 +47,8 @@
               label="Sigla do departamento"
               required
               :disabled="update"
+              :error="errorMessages.abbreviation != null"
+              :error-messages="errorMessages.abbreviation"
             ></v-text-field>
             <v-text-field
               v-model="form.name"
@@ -65,6 +68,7 @@
                 dialog = false;
                 this.$refs.addDepartamento.reset();
                 if (update == true) this.cancelUpdate();
+                errorMessages.abbreviation = null;
               }
             "
             >Cancelar</v-btn
@@ -120,6 +124,7 @@ export default {
       stored: false,
       update: false,
       updated: false,
+      errorMessages: { abbreviation: null },
     };
   },
   methods: {
@@ -134,12 +139,14 @@ export default {
           this.stored = true;
           this.form = { abbreviation: "", name: "" };
           this.$refs.addDepartamento.reset();
+          this.errorMessages.abbreviaton = null;
         }
       } catch (error) {
-        console.log(error);
+        error.response.data.message.forEach((item) => {
+          this.handleError(item);
+        });
       }
     },
-    //new
     async handleUpdate() {
       try {
         if (this.$refs.addDepartamento.validate()) {
@@ -152,10 +159,11 @@ export default {
           this.$refs.addDepartamento.reset();
         }
       } catch (error) {
-        console.log(error);
+        error.response.data.message.forEach((item) => {
+          this.handleError(item);
+        });
       }
     },
-    //new
     getOne() {
       departamentoService.getOne(this.dataToUpdate).then((response) => {
         this.form = response.data;
@@ -163,10 +171,17 @@ export default {
       this.dialog = true;
       this.update = true;
     },
-    //new
     cancelUpdate() {
       this.update = false;
       this.$emit("cancelUpdate");
+    },
+    handleError(error) {
+      switch (error.field) {
+        case "abbreviation": {
+          this.errorMessages.abbreviation = error.message;
+          break;
+        }
+      }
     },
   },
   watch: {
