@@ -59,6 +59,7 @@ import headers from "../../utils/headers.json";
 import departamentoService from "../../services/departamentoService";
 import AddDepartamento from "../forms/AddDepartamento";
 import Snackbar from "../Snackbar";
+import departamentoController from "../../controllers/adm/departamentoController";
 export default {
   components: {
     AddDepartamento,
@@ -69,7 +70,7 @@ export default {
     return {
       data: undefined,
       searchQuery: "",
-      headers: "",
+      headers: [],
       waiting: false,
       dataToUpdate: null,
       removed: false,
@@ -80,19 +81,13 @@ export default {
   },
   computed: {
     filteredList() {
-      let search = this.removeSpecial(this.searchQuery.toLowerCase().trim());
-      if (search != "") {
-        return this.data.filter((item) => {
-          return (
-            this.removeSpecial(item.name.toLowerCase()).includes(search) ||
-            this.removeSpecial(item.abbreviation.toLowerCase()).includes(search)
-          );
-        });
+      if (this.searchQuery != "") {
+        return departamentoController.filter(this.data, this.searchQuery);
       } else {
         return this.data;
       }
     },
-    // NEW
+
     notFound() {
       if (this.data == undefined || this.data.length == 0) {
         return "Ainda não foram cadastrados departamentos";
@@ -102,7 +97,7 @@ export default {
     },
   },
   methods: {
-    componentStructure() {
+    async componentStructure() {
       this.headers = headers.departamento;
       try {
         departamentoService.get().then((response) => {
@@ -122,11 +117,9 @@ export default {
       });
       this.waiting = false;
     },
-    // NEW
     handleUpdate(item) {
       this.dataToUpdate = item.id;
     },
-    // NEW
     updateData(updatedData) {
       this.waiting = true;
       var index = this.data.findIndex((item) => {
@@ -136,7 +129,6 @@ export default {
       this.dataToUpdate = null;
       this.waiting = false;
     },
-    // NEW
     async handleDelete(selectedItem) {
       try {
         this.waiting = true;

@@ -26,5 +26,25 @@
       "icon": "mdi-format-list-bulleted",
       "value": 5
     }
+  ],
+  "tutor": [
+    {
+      "title": "Turmas",
+      "icon": "mdi-google-classroom",
+      "value": 0
+    },
+    {
+      "title": "Minha Agenda",
+      "icon": "mdi-calendar",
+      "value": 1
+    },{
+      "title": "Barema Desempenho",
+      "icon": "mdi-message-draw",
+      "value": 2
+    },{
+      "title": "Repositório de Problemas",
+      "icon": "mdi-file-multiple",
+      "value": 3
+    }
   ]
 }

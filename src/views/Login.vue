@@ -190,6 +190,7 @@ export default {
     passwordRules: [],
     usernameRules: [],
     loginError: false,
+    waiting: false,
   }),
   methods: {
     async handleSubmit() {
@@ -200,8 +201,10 @@ export default {
           this.usernameRules = [(v) => !!v || "Insira um nome de usuário"];
           this.passwordRules = [(v) => !!v || "Insira uma senha"];
           if (this.$refs.signin.validate()) {
-            var token = await authService.login(this.formLogin);
-            sessionStorage.setItem("token", token.data.token);
+            var res = await authService.login(this.formLogin);
+            sessionStorage.setItem("token", res.data.token.token);
+            sessionStorage.setItem("user_type", res.data.type.user_type);
+            console.log(res.data);
             window.location.replace("http://localhost:8080/user");
           }
           this.waiting = false;

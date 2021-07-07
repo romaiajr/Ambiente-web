@@ -65,7 +65,10 @@ export default {
   }),
   computed: {
     navItems() {
-      return navlist.adm;
+      let user_type = sessionStorage.getItem("user_type");
+      if (user_type == "administrador") {
+        return navlist.adm;
+      } else return navlist.tutor;
     },
   },
   methods: {
@@ -77,6 +80,7 @@ export default {
     },
     logout() {
       sessionStorage.removeItem("token");
+      sessionStorage.removeItem("user_type");
       window.location.replace("http://localhost:8080/");
     },
   },
