@@ -11,6 +11,7 @@
               <v-col sm="12">
                 <h6>{{ item.semestre.codigo }}</h6>
               </v-col>
+
               <v-col
                 md="6"
                 sm="6"
