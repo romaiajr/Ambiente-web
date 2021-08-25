@@ -66,7 +66,7 @@ export default {
   computed: {
     navItems() {
       let user_type = sessionStorage.getItem("user_type");
-      if (user_type == "administrador") {
+      if (user_type == 1) {
         return navlist.adm;
       } else return navlist.tutor;
     },

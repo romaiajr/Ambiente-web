@@ -32,7 +32,7 @@
                 :events="events"
                 :event-color="getEventColor"
                 :type="type"
-                @change="updateRange"
+                weekdays="1,2,3,4,5"
               ></v-calendar>
             </v-sheet>
           </v-card-subtitle>
@@ -42,8 +42,10 @@
   </v-container>
 </template>
 <script>
+import turmaService from "../../services/turmaService";
 export default {
   data: () => ({
+    turmas: [],
     focus: "",
     type: "month",
     events: [],
@@ -58,10 +60,44 @@ export default {
     ],
     names: ["EXA869", "EXA497", "EXA197"],
   }),
+  created() {
+    this.getTurmas();
+    // this.getEvents();
+  },
   mounted() {
     this.$refs.calendar.checkChange();
   },
   methods: {
+    async getTurmas({ min, max }) {
+      const events = [];
+      const turmas = await turmaService.getTurmas();
+      turmas.data.forEach((turma) => {
+        this.turmas.push({
+          name: turma.code,
+          classes: turma.class_days.split(","),
+          time: turma.class_time.split(","),
+        });
+      });
+      this.turmas.forEach((turma) => {
+        console.log(turma);
+        turma.classes.forEach((day) => {
+          const allDay = this.rnd(0, 3) === 0;
+          const firstTimestamp = this.rnd(min.getTime(), max.getTime());
+          const first = new Date(firstTimestamp - (firstTimestamp % 900000));
+          const secondTimestamp = this.rnd(2, allDay ? 288 : 8) * 900000;
+          const second = new Date(first.getTime() + secondTimestamp);
+          console.log(day);
+          events.push({
+            name: turma.name,
+            color: this.colors[this.rnd(0, this.colors.length - 1)],
+            start: first,
+            end: second,
+            timed: !allDay,
+          });
+        });
+        this.events = events;
+      });
+    },
     getEventColor(event) {
       return event.color;
     },
@@ -71,25 +107,22 @@ export default {
     next() {
       this.$refs.calendar.next();
     },
-    updateRange({ start, end }) {
+    getEvents() {
       const events = [];
-      const min = new Date(`${start.date}T13:30:00`);
-      const max = new Date(`${end.date}T17:30:00`);
-      const days = (max.getTime() - min.getTime()) / 86400000;
-      const eventCount = this.rnd(days, days / 10);
-
-      for (let i = 0; i < eventCount; i++) {
-        const allDay = this.rnd(0, 3) === 0;
-        const firstTimestamp = this.rnd(min.getTime(), max.getTime());
-        const first = new Date(firstTimestamp - (firstTimestamp % 900000));
-        events.push({
-          name: this.names[this.rnd(0, this.names.length - 1)],
-          start: first,
-
-          color: this.colors[this.rnd(0, this.colors.length - 1)],
-          timed: !allDay,
+      console.log(this.turmas);
+      this.turmas.forEach((item) => {
+        console.log(item);
+        item.classes.forEach((i) => {
+          console.log(i);
+          events.push({
+            name: item.code,
+            color: this.colors[this.rnd(0, this.colors.length - 1)],
+            start: { weekday: 1, time: item.time[0].split("-")[0] },
+            end: { weekday: 1, time: item.time[0].split("-")[1] },
+          });
         });
-      }
+      });
+      console.log(events);
       this.events = events;
     },
     rnd(a, b) {

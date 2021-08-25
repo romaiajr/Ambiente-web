@@ -3,11 +3,11 @@
     <v-main
       ><Navbar @clicked="changeComponent" :current="current" />
       <AdmMain
-        v-if="user_type == 'administrador'"
+        v-if="user_type == 1"
         @changeComponent="changeComponent"
         :current="current"
       />
-      <TutorMain v-if="user_type == 'tutor'" :current="current" />
+      <TutorMain v-if="user_type == 2" :current="current" />
     </v-main>
   </v-app>
 </template>

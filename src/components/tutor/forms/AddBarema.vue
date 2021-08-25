@@ -299,7 +299,7 @@ export default {
     maxValue() {
       let total = 0;
       this.form.itens.forEach((item) => {
-        total += item.amount;
+        total += parseInt(item.amount);
       });
       return 100 - total;
     },

@@ -47,6 +47,7 @@
               @keyup.enter="handleSubmit"
               :items="semestres"
             ></v-select>
+
             <v-text-field
               type="number"
               v-model="form.number_of_classes"
@@ -55,6 +56,66 @@
               label="Número de turmas"
               required
             ></v-text-field>
+            <p class="mt-1 mb-1">
+              Dias de Aula
+              <small v-show="classes.days.length > 0">{{
+                this.classes.days
+              }}</small>
+            </p>
+            <v-card outlined style="color: #ff5252 !important">
+              <v-row class="m-0" no-gutter>
+                <v-col
+                  md="4"
+                  v-for="day in days"
+                  :key="day.value"
+                  class="pt-0 pb-0"
+                >
+                  <v-checkbox
+                    dense
+                    v-model="classes.days"
+                    :label="day.text"
+                    :value="day.value"
+                    :disabled="form.disciplina_id == null"
+                  ></v-checkbox>
+                </v-col>
+              </v-row>
+            </v-card>
+            <div v-show="correctWorkload">
+              <small style="color: #ff5252 !important"
+                >O número de dias não condiz com a carga horária da
+                disciplina</small
+              >
+            </div>
+            <p class="mt-4 mb-1">
+              Horário das Aulas
+              <small v-show="classes.time.length > 0">{{
+                this.classes.time
+              }}</small>
+            </p>
+            <v-card outlined>
+              <v-row class="m-0" no-gutter>
+                <v-col
+                  md="4"
+                  v-for="t in times"
+                  :key="t.value"
+                  class="pt-0 pb-0"
+                >
+                  <v-checkbox
+                    dense
+                    v-model="classes.time"
+                    :label="t.text"
+                    :value="t.value"
+                    :disabled="form.disciplina_id == null"
+                  ></v-checkbox>
+                </v-col>
+              </v-row>
+            </v-card>
+            <div v-show="correctTime">
+              <small style="color: #ff5252 !important"
+                >A quantidade de horários não condiz com a carga horária da
+                disciplina</small
+              >
+            </div>
           </v-form>
         </v-card-text>
         <v-card-actions class="justify-end">
@@ -96,7 +157,28 @@ export default {
   props: ["waiting"],
   data() {
     return {
-      form: { disciplina_id: "", semestre_id: "", number_of_classes: "" },
+      form: {
+        disciplina_id: null,
+        semestre_id: null,
+        number_of_classes: null,
+      },
+      classes: {
+        days: [],
+        time: [],
+      },
+      days: [
+        { text: "Segunda", value: "seg" },
+        { text: "Terça", value: "ter" },
+        { text: "Quarta", value: "qua" },
+        { text: "Quinta", value: "qui" },
+        { text: "Sexta", value: "sex" },
+      ],
+      times: [
+        { text: "7:30 - 9:30", value: "7:30 - 9:30" },
+        { text: "9:30 - 11:30", value: "9:30 - 11:30" },
+        { text: "13:30 - 15:30", value: "13:30 - 15:30" },
+        { text: "15:30 - 17:30", value: "15:30 - 17:30" },
+      ],
       dialog: false,
       validForm: undefined,
       disciplinaRules: [(v) => !!v || "Disciplina é um campo obrigatório"],
@@ -115,27 +197,50 @@ export default {
     this.getDisciplina();
     this.getSemestres();
   },
+  computed: {
+    correctWorkload() {
+      if (this.form.disciplina_id != null && this.classes.days.length > 0) {
+        var selected = this.disciplinas.filter((item) => {
+          return this.form.disciplina_id == item.value;
+        });
+        return selected[0].carga / 30 != this.classes.days.length;
+      } else return false;
+    },
+    correctTime() {
+      if (this.form.disciplina_id != null) {
+        var selected = this.disciplinas.filter((item) => {
+          return this.form.disciplina_id == item.value;
+        });
+
+        return selected[0].carga / 30 < this.classes.time.length;
+      } else return false;
+    },
+  },
   methods: {
     async handleSubmit() {
       try {
-        if (this.$refs.addTurma.validate()) {
-          var disciplina = await disciplinaOfertadaService.store(this.form);
-          var i = 0;
-          while (i < this.form.number_of_classes) {
-            var turma = await turmaService.store({
-              disciplina_id: disciplina.data.id,
-              code: `P0${i + 1}`,
-            });
-            i++;
-            turmaService.get(turma.data.id).then((response) => {
-              this.$emit("handleSubmit", response.data);
-            });
+        if (!this.correctWorkload && !this.correctTime) {
+          if (this.$refs.addTurma.validate()) {
+            var disciplina = await disciplinaOfertadaService.store(this.form);
+            var i = 0;
+            while (i < this.form.number_of_classes) {
+              var turma = await turmaService.store({
+                disciplina_id: disciplina.data.id,
+                code: `P0${i + 1}`,
+                class_days: this.classes.days.toString(),
+                class_time: this.classes.time.toString(),
+              });
+              i++;
+              turmaService.get(turma.data.id).then((response) => {
+                this.$emit("handleSubmit", response.data);
+              });
+            }
+            this.dialog = false;
+            this.stored = true;
+            this.successText(this.form.number_of_classes);
+            this.form = {};
+            this.$refs.addTurma.reset();
           }
-          this.dialog = false;
-          this.stored = true;
-          this.successText(this.form.number_of_classes);
-          this.form = {};
-          this.$refs.addTurma.reset();
         }
       } catch (error) {
         console.log(error);
@@ -147,6 +252,7 @@ export default {
           this.disciplinas.push({
             text: `${item.code} - ${item.name}`,
             value: item.id,
+            carga: item.workload,
           });
         });
       });

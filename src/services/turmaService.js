@@ -16,9 +16,12 @@ export default {
     return api.get(`turma-tutor/${obj}`, auth);
   },
   getUserByType: () => {
-    return api.get(`/users-by-type/tutor`, auth);
+    return api.get(`/users-by-type/2`, auth);
   },
   addTutor: (obj) => {
     return api.post("/turma-tutor", obj, auth);
+  },
+  getTurmas: () => {
+    return api.get("/tutor-turma", auth);
   },
 };
