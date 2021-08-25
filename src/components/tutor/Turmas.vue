@@ -2,22 +2,23 @@
   <v-container>
     <v-row id="minhas-turmas" class="mt-2">
       <v-col offset-md="2" md="8" sm="12">
-        <v-card>
+        <v-card outlined>
           <v-card-title>
+          
             <h4>Turmas</h4>
           </v-card-title>
           <v-card-subtitle>
             <v-row class="mt-2" v-for="item in turmas" :key="item.codigo">
               <v-col sm="12">
                 <h6>{{ item.semestre.codigo }}</h6>
+                <v-divider/>
               </v-col>
-
               <v-col
                 md="6"
                 sm="6"
                 v-for="i in item.semestre.turmas"
                 :key="i.nome"
-                @click="teste"
+                @click="openTurma(i)"
               >
                 <v-card max-width="344" class="mt-2 card-turma" outlined>
                   <v-card-title style="background-color: #696969">
@@ -46,6 +47,16 @@ export default {
         semestre: {
           codigo: "2020.1",
           turmas: [
+            { nome: "EXA869 - Compiladores", id: 1 },
+            { nome: "EXA437 - Algoritmos II",  id: 2 },
+            { nome: "EXA197 - Circuitos Digitais",  id: 3},
+          ],
+        },
+      },
+       {
+        semestre: {
+          codigo: "2019.2",
+          turmas: [
             { nome: "EXA869 - Compiladores" },
             { nome: "EXA437 - Algoritmos II" },
             { nome: "EXA197 - Circuitos Digitais" },
@@ -55,9 +66,9 @@ export default {
     ],
   }),
   methods: {
-    teste() {
-      console.log("teste");
-    },
+    openTurma(turma){
+      this.$router.push({path: `turma/${turma.id}`})
+    }
   },
 };
 </script>

@@ -2,6 +2,7 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 import Login from "../views/Login.vue";
 import Management from "../views/Management.vue";
+import Turma from "../views/Turma.vue"
 
 Vue.use(VueRouter);
 
@@ -20,6 +21,11 @@ const routes = [
       else next({ name: "Login" });
     },
   },
+  {
+    path: "/turma/:id",
+    name: "Turma",
+    component: Turma
+  }
 ];
 
 const router = new VueRouter({
