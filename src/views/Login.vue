@@ -204,7 +204,8 @@ export default {
             var res = await authService.login(this.formLogin);
             sessionStorage.setItem("token", res.data.token.token);
             sessionStorage.setItem("user_type", res.data.type.user_type);
-            console.log(res.data);
+            sessionStorage.setItem("type", res.data.type.type);
+            sessionStorage.setItem("username", res.data.type.first_name + " " + res.data.type.surname);
             window.location.replace("http://localhost:8080/user");
           }
           this.waiting = false;

@@ -16,8 +16,8 @@
                 md="6"
                 sm="6"
                 v-for="turma in item.semestre.turmas"
-                :key="turma.disciplina_code"
-                @click="openTurma(turma)"
+                :key="turma.turma_id"
+                @click="openTurma(turma.turma_id)"
               >
                 <v-card max-width="344" class="mt-2 card-turma" outlined>
                   <v-card-title style="background-color: #696969">
@@ -26,6 +26,7 @@
                   <v-list-item three-line>
                     <v-list-item-content>
                       <v-list-item-title class="text-h6 mb-1">
+                        {{turma.turma_code}} {{turma.class_days}}: {{turma.class_time}}
                       </v-list-item-title>
                     </v-list-item-content>
                   </v-list-item>
@@ -57,8 +58,8 @@ export default {
   },
 
   methods: {
-    openTurma(turma){
-      this.$router.push({path: `turma/${turma.id}`})
+    openTurma(turma_id){
+      this.$router.push({path: `turma/${turma_id}`})
     },
 
     groupBy(list, keyGetter) {

@@ -10,8 +10,8 @@
             </v-avatar>
           </v-list-item-title>
           <v-list-item-subtitle>
-            <h6>Nome de Usuário</h6>
-            <small>Tipo de usuário</small>
+            <h6>{{username}}</h6>
+            <small>{{type}}</small>
           </v-list-item-subtitle>
         </v-list-item-content>
       </v-list-item>
@@ -62,7 +62,13 @@ export default {
     drawer: false,
     group: 0,
     deviceWidth: undefined,
+    username: "",
+    type: ""
   }),
+  created(){
+    this.username = sessionStorage.getItem("username");
+    this.type = sessionStorage.getItem("type");
+  },
   computed: {
     navItems() {
       let user_type = sessionStorage.getItem("user_type");
@@ -81,6 +87,7 @@ export default {
     logout() {
       sessionStorage.removeItem("token");
       sessionStorage.removeItem("user_type");
+      sessionStorage.removeItem("username");
       window.location.replace("http://localhost:8080/");
     },
   },
