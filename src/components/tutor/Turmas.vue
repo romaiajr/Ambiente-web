@@ -4,11 +4,10 @@
       <v-col offset-md="2" md="8" sm="12">
         <v-card outlined>
           <v-card-title>
-          
             <h4>Turmas</h4>
           </v-card-title>
           <v-card-subtitle>
-            <v-row class="mt-2" v-for="item in turmas" :key="item.codigo">
+            <v-row class="mt-2" v-for="item in turmas" :key="item.semestre.codigo">
               <v-col sm="12">
                 <h6>{{ item.semestre.codigo }}</h6>
                 <v-divider/>
@@ -16,13 +15,13 @@
               <v-col
                 md="6"
                 sm="6"
-                v-for="i in item.semestre.turmas"
-                :key="i.nome"
-                @click="openTurma(i)"
+                v-for="turma in item.semestre.turmas"
+                :key="turma.disciplina_code"
+                @click="openTurma(turma)"
               >
                 <v-card max-width="344" class="mt-2 card-turma" outlined>
                   <v-card-title style="background-color: #696969">
-                    <p style="color: #ffffff">{{ i.nome }}</p>
+                    <p style="color: #ffffff">{{turma.disciplina_code}} - {{turma.disciplina_name}}</p>
                   </v-card-title>
                   <v-list-item three-line>
                     <v-list-item-content>
@@ -40,34 +39,40 @@
   </v-container>
 </template>
 <script>
+import turmaService from "../../services/turmaService";
 export default {
   data: () => ({
-    turmas: [
-      {
-        semestre: {
-          codigo: "2020.1",
-          turmas: [
-            { nome: "EXA869 - Compiladores", id: 1 },
-            { nome: "EXA437 - Algoritmos II",  id: 2 },
-            { nome: "EXA197 - Circuitos Digitais",  id: 3},
-          ],
-        },
-      },
-       {
-        semestre: {
-          codigo: "2019.2",
-          turmas: [
-            { nome: "EXA869 - Compiladores" },
-            { nome: "EXA437 - Algoritmos II" },
-            { nome: "EXA197 - Circuitos Digitais" },
-          ],
-        },
-      },
-    ],
+    turmas: []
   }),
+
+  created(){
+    turmaService.getTurmas().then((response) => {
+      this.groupBy(response.data, semestre => semestre.semestre_code).forEach((turmas, index) => {
+          this.turmas.push({ semestre: {
+            codigo: index,
+            turmas: turmas
+          }});
+        });
+    });
+  },
+
   methods: {
     openTurma(turma){
       this.$router.push({path: `turma/${turma.id}`})
+    },
+
+    groupBy(list, keyGetter) {
+      const map = new Map();
+      list.forEach((item) => {
+        const key = keyGetter(item);
+        const collection = map.get(key);
+        if (!collection) {
+          map.set(key, [item]);
+        } else {
+          collection.push(item);
+        }
+      });
+      return map;
     }
   },
 };
