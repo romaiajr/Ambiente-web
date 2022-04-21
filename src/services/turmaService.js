@@ -15,6 +15,9 @@ export default {
   getTutores: (obj) => {
     return api.get(`turma-tutor/${obj}`, auth);
   },
+  getProblemas: (obj) => {
+    return api.get(`turma-problemas-unidades/${obj}`, auth);
+  },
   getUserByType: () => {
     return api.get(`/users-by-type/2`, auth);
   },
