@@ -2,7 +2,7 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 import Login from "../views/Login.vue";
 import Management from "../views/Management.vue";
-import Turma from "../views/Turma.vue"
+import Turma from "../components/tutor/Turma.vue";
 
 Vue.use(VueRouter);
 
