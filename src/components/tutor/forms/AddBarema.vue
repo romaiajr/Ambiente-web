@@ -148,7 +148,7 @@ export default {
       item: { name: "", amount: "" },
       dialog: false,
       validForm: undefined,
-      nameRules: [(v) => !!v || "Sigla do Departamento é um campo obrigatório"],
+      nameRules: [(v) => !!v || "Nome do Barema é um campo obrigatório"],
       itensRules: [
         (v) => v.length >= 1 || "O Barema deve conter ao menos 1 critério",
       ],

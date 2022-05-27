@@ -206,7 +206,7 @@ export default {
             sessionStorage.setItem("user_type", res.data.type.user_type);
             sessionStorage.setItem("type", res.data.type.type);
             sessionStorage.setItem("username", res.data.type.first_name + " " + res.data.type.surname);
-            window.location.replace("http://localhost:8080/user");
+            window.location.replace("http://localhost:8081/user");
           }
           this.waiting = false;
         }

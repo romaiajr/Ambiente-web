@@ -18,7 +18,14 @@
               <v-card-title>
                   <h5>Problemas</h5>
                   <v-spacer></v-spacer>
-                  <v-btn color="primary">Novo Problema</v-btn>
+                  <AddProblema
+                    @handleSubmit="handleSubmit"
+                    :dataToUpdate="dataToUpdate"
+                    :disciplina_ofertada_id="turma.disciplina_ofertada_id"
+                    @handleUpdate="updateData"
+                    @cancelUpdate="dataToUpdate = null"
+                    :waiting="waiting"
+                  />
               </v-card-title>
 
               <v-card-subtitle >
@@ -66,20 +73,34 @@
 <script>
 import Navbar from "../Navbar.vue";
 import turmaService from "../../services/turmaService";
+import AddProblema from "./forms/AddProblema.vue";
 export default{
     components: {
       Navbar,
+      AddProblema,
     },
     props: ["current"],
     data: () => ({
-        turma:{},
-        problemas: []
+        turma: {},
+        problemas: [],
+        waiting: false,
+        removed: false,
+        dataToUpdate: undefined,
     }),
       created(){
-        turmaService.getProblemas(3).then((response) => {
+        turmaService.getProblemas(this.$route.params.id).then((response) => {
             this.problemas = response.data.problemas;
             this.turma = response.data.turma;
         });
-  },
+      },
+      methods: {
+        async handleSubmit(submit) {
+          this.problemas.push(submit.problema);
+        },
+
+        updateData(updatedData) {
+          console.log(updatedData)
+        }
+      },
 }
 </script>

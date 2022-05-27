@@ -88,7 +88,7 @@ export default {
       sessionStorage.removeItem("token");
       sessionStorage.removeItem("user_type");
       sessionStorage.removeItem("username");
-      window.location.replace("http://localhost:8080/");
+      window.location.replace("http://localhost:8081/");
     },
   },
   watch: {
