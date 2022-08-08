@@ -37,6 +37,40 @@
               :error="errorMessages.name != null"
               :error-messages="errorMessages.name"
             ></v-text-field>
+            <v-menu
+              ref="menu1"
+              v-model="menu1"
+              :close-on-content-click="false"
+              transition="scale-transition"
+              offset-y
+              max-width="290px"
+              min-width="auto"
+            >
+              <template v-slot:activator="{ on, attrs }">
+                <v-text-field
+                  v-model="dateFormatted"
+                  label="data_entrega"
+                  persistent-hint
+                  prepend-icon="mdi-calendar"
+                  v-bind="attrs"
+                  @blur="form.data_entrega = parseDate(dateFormatted)"
+                  v-on="on"
+                ></v-text-field>
+              </template>
+              <v-date-picker
+                v-model="form.data_entrega"
+                no-title
+                @input="menu1 = false"
+              ></v-date-picker>
+            </v-menu>
+            <v-file-input
+              show-size
+              truncate-length="17"
+              label="Anexo"
+              id="file"
+              ref="file"
+              v-on:change="onChangeFileUpload()"
+            ></v-file-input>
             <v-textarea
               v-model="form.description"
               @keyup.enter="handleSubmit"
@@ -85,7 +119,13 @@ export default {
   props: ["dataToUpdate", "waiting", "disciplina_ofertada_id"],
   data() {
     return {
-      form: { title: "", description: "" },
+      form: { title: "", 
+              description: "",
+              data_entrega: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
+              anexo: null
+              },
+      dateFormatted: this.formatDate((new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10)),
+      menu1: false,
       dialog: false,
       validForm: undefined,
       title: [(v) => !!v || "Nome do problema é um campo obrigatório"],
@@ -96,7 +136,49 @@ export default {
       errorMessages: { name: null },
     };
   },
+
+  watch: {
+    dataToUpdate() {
+      if (this.dataToUpdate != null) {
+        this.getOne();
+      }
+    },
+    form:{
+      handler(){
+        this.dateFormatted = this.formatDate(this.form.data_entrega)
+      },
+      deep: true
+    },
+  },
+  
+  computed: {
+    snackText() {
+      return this.updated == false
+        ? "Problema Adicionado com Sucesso!"
+        : "Problema Atualizado com Sucesso!";
+    },
+    computedDateFormatted () {
+      return this.formatDate(this.date)
+    },
+  },
+
   methods: {
+    onChangeFileUpload(){
+      this.form.anexo = this.$refs.file.files[0];
+    },
+    formatDate (date) {
+      if (!date) return null
+
+      const [year, month, day] = date.split('-')
+      return `${day}/${month}/${year}`
+    },
+    
+    parseDate (date) {
+      if (!date) return null
+      const [day, month, year] = date.split('/')
+      return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`
+    },
+
     async handleSubmit() {
       this.form.title.trim();
       this.form.description.trim();
@@ -107,7 +189,7 @@ export default {
           this.dialog = false;
           this.$emit("handleSubmit", problema.data);
           this.stored = true;
-          this.form = { title: "", description: "" };
+          this.form = { title: "", description: "", data_entrega: null, anexo: null};
           this.$refs.AddProblema.reset();
           this.errorMessages.name = null;
         }
@@ -128,7 +210,7 @@ export default {
           this.dialog = false;
           this.updated = true;
           this.update = false;
-          this.form = { title: "", description: "" };
+          this.form = { title: "", description: "", data_entrega: null, anexo: null};
           this.$refs.AddProblema.reset();
         }
       } catch (error) {
@@ -163,20 +245,6 @@ export default {
           break;
         }
       }
-    },
-  },
-  watch: {
-    dataToUpdate() {
-      if (this.dataToUpdate != null) {
-        this.getOne();
-      }
-    },
-  },
-  computed: {
-    snackText() {
-      return this.updated == false
-        ? "Problema Adicionado com Sucesso!"
-        : "Problema Atualizado com Sucesso!";
     },
   },
 };
